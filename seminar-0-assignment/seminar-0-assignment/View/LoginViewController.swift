@@ -28,6 +28,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
         
         nameTF.autocapitalizationType = .none
+        nameTF.autocorrectionType = .no
         nameTF.borderStyle = .bezel
         
         topView.addSubview(nameTF)
@@ -36,6 +37,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         nameTF.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 100).isActive = true
         nameTF.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -10).isActive = true
         
+        mailTF.autocorrectionType = .no
         mailTF.keyboardType = .emailAddress
         mailTF.autocapitalizationType = .none
         mailTF.borderStyle = .bezel
@@ -47,6 +49,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         mailTF.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -10).isActive = true
         
         pwTF.isSecureTextEntry = true
+        pwTF.autocorrectionType = .no
         pwTF.autocapitalizationType = .none
         pwTF.borderStyle = .bezel
         
