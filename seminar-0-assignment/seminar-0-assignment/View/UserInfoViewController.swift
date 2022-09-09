@@ -77,11 +77,14 @@ class UserInfoViewController: UIViewController {
         logoutButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         logoutButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         logoutButton.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -100).isActive = true
+        
         //Button Hit 다음 동작
         logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
     }
     
     @objc func logout() {
+        UserDefaults.standard.removeObject(forKey: "savedName")
+        UserDefaults.standard.removeObject(forKey: "savedMail")
         self.navigationController?.popViewController(animated: true)
     }
 }

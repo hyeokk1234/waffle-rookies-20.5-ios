@@ -8,13 +8,13 @@
 import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
-    
     let nameTF = UITextField()
     let mailTF = UITextField()
     let pwTF = UITextField()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkPreviousData() //UserDafault에 데이터가 있는지 확인
         
         let topView : UIView = .init(frame: .init())
         topView.backgroundColor = .systemBackground
@@ -98,12 +98,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         loginButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         loginButton.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -100).isActive = true
-        //Button Hit 다음 동작
+        //Button Hit 다음 동작 설정
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
         
     }
+    
     @objc func login() {
-        //빠진 text field가 있으면 알림 띄움
+        //비어있는 text field가 있으면 알림 띄움
         if (nameTF.text == "" || mailTF.text == "" || pwTF.text == "") {
             let noInputAlert = UIAlertController(title: "", message: "내용을 입력해주세요", preferredStyle: .alert)
             let alertOkButton = UIAlertAction(title: "Okay", style: .default, handler: nil)
@@ -114,7 +115,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         //이름이 2글자 미만이면 알림 띄움
         else if (nameTF.text!.count < 2) {
-            //alert
             let nameLengthAlert = UIAlertController(title: "", message: "username은 두 글자 이상이어야 합니다", preferredStyle: .alert)
             let alertOkButton = UIAlertAction(title: "Okay", style: .default, handler: nil)
             nameLengthAlert.addAction(alertOkButton)
@@ -122,9 +122,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        
-        //다음 View로 넘어가기위한 View 세팅
-        //ViewModel을 만들고 정보 넘겨줌
+        setUserDefault() //위의 조건들을 통과했으면 UserDefault에 현재 정보 저장
+        toNextView() //다음 View로 넘어가는 함수
+    }
+    
+    func toNextView() {
         let loginViewModel = LoginViewModel()
         loginViewModel.buildModel(userName: nameTF.text!, userMail: mailTF.text!)
         
@@ -136,12 +138,25 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
-
+    
     func resetInputData() {
         nameTF.text = ""
         mailTF.text = ""
         pwTF.text = ""
     }
-
+    
+    func setUserDefault() {
+        UserDefaults.standard.set(nameTF.text, forKey: "savedName")
+        UserDefaults.standard.set(mailTF.text, forKey: "savedMail")
+    }
+    
+    func checkPreviousData() {
+        if let prevName = UserDefaults.standard.value(forKey: "savedName"), let prevMail =  UserDefaults.standard.value(forKey: "savedMail") {
+            nameTF.text = (prevName as! String)
+            mailTF.text = (prevMail as! String)
+            
+            toNextView()
+        }
+    }
 }
 
