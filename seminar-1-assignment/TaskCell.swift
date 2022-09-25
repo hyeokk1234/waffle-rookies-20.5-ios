@@ -35,12 +35,24 @@ class TaskCell : UITableViewCell {
     }
     
     @objc func tapDoneButton() {
-        self.taskModel!.isDone = true
-        changeAppearance()
-        saveAllData()
+        if (self.taskModel!.isDone == false) {
+            self.taskModel!.isDone = true
+            changeToStrikeThrough()
+            saveAllData()
+        } else {
+            self.taskModel!.isDone = false
+            changeToDefault()
+            saveAllData()
+        }
+    }
+    func changeToDefault() {
+        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (self.textLabel?.text)!)
+        attributeString.setAttributes([:], range: NSMakeRange(0, attributeString.length))
+        self.textLabel?.attributedText = attributeString
+        doneButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
     }
     
-    func changeAppearance() {
+    func changeToStrikeThrough() {
         let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (self.textLabel?.text)!)
         attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
         self.textLabel?.attributedText = attributeString
@@ -53,7 +65,7 @@ class TaskCell : UITableViewCell {
         self.textLabel?.text = tm.content
         
         if self.taskModel!.isDone! {
-            changeAppearance()
+            changeToStrikeThrough()
         }
     }
     
