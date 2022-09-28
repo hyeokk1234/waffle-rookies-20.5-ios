@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import UIKit
+
+
+//뉴스 하나를 담고 있을 UITableViewCell
+class NewsTableCell : UITableViewCell {
+    
+}
