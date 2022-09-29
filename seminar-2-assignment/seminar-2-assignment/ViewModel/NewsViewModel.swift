@@ -17,8 +17,9 @@ class NewsViewModel {
         "X-Naver-Client-Secret" : "ms7B59BObZ"
     ]
     
-    func sendRequest(keyword: String) {
-        guard let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
+    //false를 반환하면 제대로 처리가 안 된 것. true를 반환하면 제대로 처리된 것.
+    func sendRequest(keyword: String) -> Bool {
+        guard let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return false }
         let finalUrlStr = urlStr + "?query=" + encodedKeyword + "&display=20"
         
         AF.request(finalUrlStr, method: .get, headers: headers).responseData { response in
@@ -42,5 +43,14 @@ class NewsViewModel {
             }
             debugPrint(response)
         }
+        if (self.news.count == 20) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func getNum() -> Int {
+        return news.count
     }
 }

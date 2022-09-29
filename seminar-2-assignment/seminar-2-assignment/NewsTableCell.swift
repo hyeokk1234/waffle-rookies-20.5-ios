@@ -24,14 +24,15 @@ class NewsTableCell : UITableViewCell {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             titleLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -100)
+            titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -100),
+            titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20)
         ])
         
         self.contentView.addSubview(dateLabel)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             dateLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            dateLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0)
+            dateLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20)
         ])
         
     }
