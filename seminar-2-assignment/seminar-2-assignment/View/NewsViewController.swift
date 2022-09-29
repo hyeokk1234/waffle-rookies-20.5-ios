@@ -35,16 +35,16 @@ class NewsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
     }
 }
 
 extension NewsViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("search button clicked")
+        print("***************!!!SEARCH BUTTON CLICKED!!!***************")
+        print("검색어: " + searchBar.text! + "\n\n")
         
         if let keyword : String = searchBar.text {
-            self.viewModel.getKeyword(keyword: keyword)
+            self.viewModel.sendRequest(keyword: keyword)
         } else {
             return
         }
