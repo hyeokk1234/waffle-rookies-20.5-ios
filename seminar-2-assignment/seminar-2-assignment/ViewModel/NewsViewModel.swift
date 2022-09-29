@@ -32,7 +32,7 @@ class NewsViewModel {
                     let json = try decoder.decode(jsonFirstLayer.self, from: result)
                     self.news = json.items!
                 } catch {
-                    print("\n\n&&&&&&&&&&&&&&&&&&&\n JSON 파싱 에러 \n&&&&&&&&&&&&&&&&&&&\n\n")
+                    print("\n\n&&&&&&&&&&&&&&&&&&&\n JSON 파싱 에러 발생 \n&&&&&&&&&&&&&&&&&&&\n\n")
                     print(String(describing: error))
                     print("\n")
                 }

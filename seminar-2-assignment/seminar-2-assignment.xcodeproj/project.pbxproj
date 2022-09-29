@@ -75,10 +75,10 @@
 				5C5ACEE328DD82DD00BAACB4 /* LaunchScreen.storyboard */,
 				5C5ACEE628DD82DD00BAACB4 /* Info.plist */,
 				5C5ACEDA28DD82DB00BAACB4 /* SceneDelegate.swift */,
+				5C7032A528E32EB700822F4B /* NewsTableCell.swift */,
 				5C8A779528E2DE87004E26CF /* Model */,
 				5C8A779428E2DE7F004E26CF /* ViewModel */,
 				5C8A779328E2DE6E004E26CF /* View */,
-				5C7032A528E32EB700822F4B /* NewsTableCell.swift */,
 			);
 			path = "seminar-2-assignment";
 			sourceTree = "<group>";
