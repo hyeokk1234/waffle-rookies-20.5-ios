@@ -14,7 +14,6 @@ class NewsViewController: UIViewController {
 
     init(vm: NewsViewModel) {
         viewModel = vm;
-
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -43,6 +42,12 @@ extension NewsViewController {
         ])
         
         self.view.addSubview(tableView)
+        tableView.rowHeight = UITableView.automaticDimension;
+        tableView.estimatedRowHeight = 130;
+        tableView.register(NewsTableCell.self, forCellReuseIdentifier: "TableViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        
         tableView.backgroundColor = .darkGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -51,39 +56,88 @@ extension NewsViewController {
             tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
         ])
-        tableView.register(NewsTableCell.self, forCellReuseIdentifier: "TableViewCell")
-        tableView.delegate = self
-        tableView.dataSource = self
+        
     }
 }
 
 extension NewsViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("*********************************************************")
         print("***************!!!SEARCH BUTTON CLICKED!!!***************")
+        print("*********************************************************")
         print("검색어: " + searchBar.text! + "\n\n")
-        let flag : Bool
+//        var flag = false
+//
+//        DispatchQueue.main.async {
+//            if let keyword : String = searchBar.text {
+//                flag = self.viewModel.sendRequest(keyword: keyword) { response in
+//                    print("뉴스 받아온거 세팅")
+//                    self.viewModel.news = response
+//                }
+//            } else {
+//                return
+//            }
+//        }
+//
+//        DispatchQueue.main.async {
+//            if (flag) {
+//                print("테이블 로드")
+//                self.tableView.reloadData()
+//            }
+//        }
+
+        
+
+//        main은 메인스레드. serial queue니까 하나가 끝나야 다음걸 함.
+//        global()은 concurrent
+        /*
+         sync: 큐에 작업을 추가하고 끝날 때까지 기다리면 됨.
+         async: 큐에 작업을 추가하고 다른 작업을 함
+         */
+        let semaphore = DispatchSemaphore(value: 0)
         
         if let keyword : String = searchBar.text {
-            flag = self.viewModel.sendRequest(keyword: keyword)
-        } else {
-            return
+            self.viewModel.sendRequest(keyword: keyword) { response in
+                print("뉴스 받아온거 세팅")
+                self.viewModel.news = response
+                semaphore.signal()
+                
+                DispatchQueue.main.async {
+                    semaphore.wait()
+                    print("테이블뷰 리로드")
+                    self.tableView.reloadData()
+                }
+            }
         }
         
-        if (flag) {
-            self.tableView.reloadData()
-        }
+
+        
+        
+
     }
 }
 
 extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return viewModel.getNum()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! NewsTableCell
         cell.backgroundColor = .lightGray
-        cell.configure(title: "bsj", date: "bsjdate")
+        let title = viewModel.getTitle(index: indexPath.row)
+        let date = viewModel.getDate(index: indexPath.row)
+        cell.configure(title: title, date: date)
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+       return UITableView.automaticDimension
+    }
+    
+    private func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
 }
+
