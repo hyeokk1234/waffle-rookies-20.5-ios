@@ -48,7 +48,6 @@ extension NewsViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.backgroundColor = .darkGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: self.newsSearchBar.bottomAnchor),
@@ -62,58 +61,19 @@ extension NewsViewController {
 
 extension NewsViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("*********************************************************")
-        print("***************!!!SEARCH BUTTON CLICKED!!!***************")
-        print("*********************************************************")
-        print("검색어: " + searchBar.text! + "\n\n")
-//        var flag = false
-//
-//        DispatchQueue.main.async {
-//            if let keyword : String = searchBar.text {
-//                flag = self.viewModel.sendRequest(keyword: keyword) { response in
-//                    print("뉴스 받아온거 세팅")
-//                    self.viewModel.news = response
-//                }
-//            } else {
-//                return
-//            }
-//        }
-//
-//        DispatchQueue.main.async {
-//            if (flag) {
-//                print("테이블 로드")
-//                self.tableView.reloadData()
-//            }
-//        }
-
-        
-
-//        main은 메인스레드. serial queue니까 하나가 끝나야 다음걸 함.
-//        global()은 concurrent
-        /*
-         sync: 큐에 작업을 추가하고 끝날 때까지 기다리면 됨.
-         async: 큐에 작업을 추가하고 다른 작업을 함
-         */
         let semaphore = DispatchSemaphore(value: 0)
         
         if let keyword : String = searchBar.text {
             self.viewModel.sendRequest(keyword: keyword) { response in
-                print("뉴스 받아온거 세팅")
                 self.viewModel.news = response
                 semaphore.signal()
                 
                 DispatchQueue.main.async {
                     semaphore.wait()
-                    print("테이블뷰 리로드")
                     self.tableView.reloadData()
                 }
             }
         }
-        
-
-        
-        
-
     }
 }
 
@@ -125,10 +85,11 @@ extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! NewsTableCell
-        cell.backgroundColor = .lightGray
         let title = viewModel.getTitle(index: indexPath.row)
         let date = viewModel.getDate(index: indexPath.row)
         cell.configure(title: title, date: date)
+        cell.titleLabel.sizeToFit()
+        cell.sizeToFit()
         return cell
     }
     

@@ -19,8 +19,12 @@ class NewsViewModel {
     let month = ["Jan" : "1월", "Feb" : "2월", "Mar" : "3월", "Apr" : "4월", "May" : "5월", "Jun" : "6월", "Jul" : "7월", "Aug" : "8월", "Sep" : "9월", "Oct" : "10월", "Nov" : "11월", "Dec" : "12월"]
     
     func sendRequest(keyword: String, completion: @escaping ([NewsModel]) -> Void) {
+        //start:검색 시작 위치. 기본값은 1
+        let start = 1
+        
         guard let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
-        let finalUrlStr = urlStr + "?query=" + encodedKeyword + "&display=20"
+        let finalUrlStr =
+        urlStr + "?query=" + encodedKeyword + "&display=20" + "&start=" + String(start)
         
         AF.request(finalUrlStr, method: .get, headers: self.headers).responseData { response in
             
@@ -37,15 +41,14 @@ class NewsViewModel {
                     print(String(describing: error))
                 }
                 
-                
             default :
                 return
             }
-//            debugPrint(response)
             
             if let json = json {
                 completion(json.items!)
             }
+            debugPrint(response)
         }
     }
     

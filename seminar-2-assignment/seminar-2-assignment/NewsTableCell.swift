@@ -21,6 +21,7 @@ class NewsTableCell : UITableViewCell {
         super.init(style: .default, reuseIdentifier: "TableViewCell")
         
         self.contentView.addSubview(titleLabel)
+        titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
@@ -30,6 +31,7 @@ class NewsTableCell : UITableViewCell {
         ])
         
         self.contentView.addSubview(dateLabel)
+        dateLabel.numberOfLines = 0
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             dateLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
