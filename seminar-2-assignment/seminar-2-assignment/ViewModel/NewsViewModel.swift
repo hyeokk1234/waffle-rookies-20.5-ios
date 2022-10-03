@@ -24,7 +24,7 @@ class NewsViewModel {
         
         guard let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
         let finalUrlStr =
-        urlStr + "?query=" + encodedKeyword + "&display=20" + "&start=" + String(start)
+        urlStr + "?query=" + encodedKeyword + "&display=20" + "&start=" + String(start) + "&sort=sim"
         
         AF.request(finalUrlStr, method: .get, headers: self.headers).responseData { response in
             

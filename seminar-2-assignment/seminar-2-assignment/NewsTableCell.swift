@@ -27,7 +27,7 @@ class NewsTableCell : UITableViewCell {
             titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
             titleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
             titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -150)
+            titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -160)
         ])
         
         self.contentView.addSubview(dateLabel)

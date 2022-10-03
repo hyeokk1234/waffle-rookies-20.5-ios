@@ -10,7 +10,8 @@ import UIKit
 class NewsViewController: UIViewController {
     private let viewModel : NewsViewModel
     private let tableView = UITableView()
-    private let newsSearchBar = UISearchBar()
+    private let newsSearchTF = UITextField()
+    private let newsSearchButton = UIButton()
 
     init(vm: NewsViewModel) {
         viewModel = vm;
@@ -31,14 +32,27 @@ class NewsViewController: UIViewController {
 extension NewsViewController {
     func setUpLayout() {
         self.navigationItem.title = "뉴스 헤드라인"
-        newsSearchBar.delegate = self
-
-        self.view.addSubview(newsSearchBar)
-        newsSearchBar.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.view.addSubview(newsSearchTF)
+        newsSearchTF.autocorrectionType = .no
+        newsSearchTF.autocapitalizationType = .none
+        newsSearchTF.borderStyle = .line
+        
+        newsSearchTF.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            newsSearchBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            newsSearchBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-            newsSearchBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            newsSearchTF.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            newsSearchTF.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            newsSearchTF.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -80),
+            newsSearchTF.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        self.view.addSubview(newsSearchButton)
+        newsSearchButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            newsSearchButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            newsSearchButton.leadingAnchor.constraint(equalTo: self.newsSearchTF.trailingAnchor, constant: 0),
+            newsSearchButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
+            newsSearchButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         self.view.addSubview(tableView)
@@ -50,20 +64,28 @@ extension NewsViewController {
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: self.newsSearchBar.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: self.newsSearchTF.bottomAnchor),
             tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
         ])
         
+        var config = UIButton.Configuration.filled()
+        config.titleTextAttributesTransformer =
+          UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.preferredFont(forTextStyle: .headline)
+            return outgoing
+          }
+        config.title = "Search"
+        newsSearchButton.configuration = config
+        newsSearchButton.addTarget(self, action: #selector(search), for: .touchUpInside)
     }
-}
-
-extension NewsViewController : UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    
+    @objc func search() {
         let semaphore = DispatchSemaphore(value: 0)
         
-        if let keyword : String = searchBar.text {
+        if let keyword : String = newsSearchTF.text {
             self.viewModel.sendRequest(keyword: keyword) { response in
                 self.viewModel.news = response
                 semaphore.signal()
