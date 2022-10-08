@@ -12,9 +12,11 @@ import UIKit
 
 class TopRatedCollectionViewVC : UIViewController {
     private var collectionView: UICollectionView!
-    private let data = Data()
+    private let data = Data2()
+    private let viewModel : MovieVM
     
-    init() {
+    init(vm: MovieVM) {
+        self.viewModel = vm
         super.init(nibName: nil, bundle: nil)
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionViewFlowLayout())
     }
@@ -52,10 +54,6 @@ class TopRatedCollectionViewVC : UIViewController {
 }
 
 extension TopRatedCollectionViewVC: UICollectionViewDelegate, UICollectionViewDataSource {
-
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: 120, height: 120)
-//    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return data.memberName.count

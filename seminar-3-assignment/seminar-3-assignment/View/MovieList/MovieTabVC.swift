@@ -8,24 +8,23 @@
 /* Moview Tab을 눌렀을 때 나올 뷰컨.
  * 평점순, 인기순을 결정할 수 있고 버튼이 눌리면 그에 해당하는 collection view 갈아끼움.
  * 즉, 얘가 parent.
- * child는?
- * => PopularCollectionViewVC, TopRatedCollectionViewVC
+ * child는 PopularCollectionViewVC, TopRatedCollectionViewVC
  */
 
 import Foundation
 import UIKit
 
 class MovieTabVC : UIViewController {
-    let viewModel : MovieVM
+    private let viewModel : MovieVM
     
-    let segmentedControl = UISegmentedControl(items: ["Popular", "Top-Rated"])
+    private let segmentedControl = UISegmentedControl(items: ["Popular", "Top-Rated"])
     
     //인기순 뷰컨
-    let popularVC = PopularCollectionViewVC()
+    private var popularVC : PopularCollectionViewVC
     
     //평점순 뷰컨
-    let rateVC = TopRatedCollectionViewVC()
-    var shouldHidePopularView: Bool? {
+    private var rateVC : TopRatedCollectionViewVC
+    private var shouldHidePopularView: Bool? {
         didSet {
           guard let shouldHidePopularView = self.shouldHidePopularView else { return }
             self.popularVC.view.isHidden = shouldHidePopularView
@@ -35,6 +34,8 @@ class MovieTabVC : UIViewController {
     
     init(vm : MovieVM) {
         self.viewModel = vm
+        popularVC = PopularCollectionViewVC(vm: vm)
+        rateVC = TopRatedCollectionViewVC(vm: vm)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,7 +46,8 @@ class MovieTabVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLayout()
-        //이제 여기서 Alamofire로 데이터 받아와서 vm에 저장해주는거 구현하면됨.
+        sendApiRequest()
+    
     }
 }
 
@@ -94,4 +96,17 @@ extension MovieTabVC {
     @objc private func didChangeValue(segment: UISegmentedControl) {
         self.shouldHidePopularView = segment.selectedSegmentIndex != 0
     }
+}
+
+extension MovieTabVC { //API request와 관련된 함수들을 다루는 extension
+    func sendApiRequest() {
+        viewModel.apiRequestPopular (page: 1) { response in
+            self.viewModel.popularMovies = response
+        }
+        
+        viewModel.apiRequestTopRate (page: 1) { response in
+            self.viewModel.topRateMovies = response
+        }
+    }
+
 }

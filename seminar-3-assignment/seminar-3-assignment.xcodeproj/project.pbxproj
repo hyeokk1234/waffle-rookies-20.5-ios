@@ -25,6 +25,7 @@
 		5CAA775528F1579E00E91640 /* CollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAA775428F1579E00E91640 /* CollectionViewFlowLayout.swift */; };
 		5CAA775728F15C4D00E91640 /* FavoriteCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAA775628F15C4D00E91640 /* FavoriteCollectionViewVC.swift */; };
 		5CAA775B28F1804C00E91640 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAA775A28F1804C00E91640 /* Data.swift */; };
+		5CAA775D28F1A0B100E91640 /* Data2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAA775C28F1A0B100E91640 /* Data2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		5CAA775428F1579E00E91640 /* CollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		5CAA775628F15C4D00E91640 /* FavoriteCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCollectionViewVC.swift; sourceTree = "<group>"; };
 		5CAA775A28F1804C00E91640 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		5CAA775C28F1A0B100E91640 /* Data2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data2.swift; sourceTree = "<group>"; };
 		69E875FF22DA77510BBE03A5 /* Pods_seminar_3_assignment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seminar_3_assignment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB50DBCC34877732410A9B4B /* Pods-seminar-3-assignment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seminar-3-assignment.release.xcconfig"; path = "Target Support Files/Pods-seminar-3-assignment/Pods-seminar-3-assignment.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +134,7 @@
 				5CAA775128F1577C00E91640 /* MovieCollectionViewCell.swift */,
 				5CAA775428F1579E00E91640 /* CollectionViewFlowLayout.swift */,
 				5CAA775A28F1804C00E91640 /* Data.swift */,
+				5CAA775C28F1A0B100E91640 /* Data2.swift */,
 			);
 			path = CustomClasses;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				5CAA774C28F1572F00E91640 /* TopRatedCollectionViewVC.swift in Sources */,
 				5CAA775B28F1804C00E91640 /* Data.swift in Sources */,
 				5CAA774828F156FE00E91640 /* MovieTabVC.swift in Sources */,
+				5CAA775D28F1A0B100E91640 /* Data2.swift in Sources */,
 				5C9495CB28F1327D005610EA /* SceneDelegate.swift in Sources */,
 				5CAA774A28F1570E00E91640 /* FavoriteTabVC.swift in Sources */,
 				5CAA775728F15C4D00E91640 /* FavoriteCollectionViewVC.swift in Sources */,

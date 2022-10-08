@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+struct Data2 {
+    let memberName = ["안녕", "안녕2", "안녕3", "안녕4", "안녕5", "안녕6"]
+}
