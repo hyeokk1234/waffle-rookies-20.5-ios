@@ -7,3 +7,9 @@
 
 import Foundation
 import UIKit
+
+class MovieVM {
+    var topRateMovies : [MovieModel] = []
+    var popularMovies : [MovieModel] = []
+    var favorites : [MovieModel] = []
+}

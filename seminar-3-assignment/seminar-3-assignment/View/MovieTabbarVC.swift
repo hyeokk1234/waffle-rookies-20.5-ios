@@ -10,16 +10,17 @@
 import Foundation
 import UIKit
 
-class MoviewTabbarVC : UITabBarController, UITabBarControllerDelegate {
+class MovieTabbarVC : UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
+        let vm = MovieVM()
                 
-        let movieTab = UINavigationController(rootViewController: MovieTabVC())
+        let movieTab = UINavigationController(rootViewController: MovieTabVC(vm: vm))
         let movieTabBarItem = UITabBarItem(title: "Movie", image: UIImage(systemName: "m.square.fill"), tag: 1)
         movieTab.tabBarItem = movieTabBarItem
                 
-        let favoriteTab = UINavigationController(rootViewController: FavoriteTabVC())
+        let favoriteTab = UINavigationController(rootViewController: FavoriteTabVC(vm: vm))
         let favoriteTabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "star"), tag: 2)
         favoriteTab.tabBarItem = favoriteTabBarItem
         
