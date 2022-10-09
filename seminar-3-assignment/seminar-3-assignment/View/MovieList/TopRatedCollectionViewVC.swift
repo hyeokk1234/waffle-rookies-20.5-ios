@@ -61,7 +61,8 @@ extension TopRatedCollectionViewVC: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellIdentifier", for: indexPath) as! MovieCollectionViewCell
-                cell.memberNameLabel.text = data.memberName[indexPath.row]
+        cell.titleLabel.text = data.memberName[indexPath.row]
+        cell.rateLabel.text = "toprate rate label"
         return cell
     }
 }

@@ -46,7 +46,7 @@ class PopularCollectionViewVC : UIViewController {
     func registerCollectionView() {
         collectionView.register(MovieCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "cellIdentifier")
     }
-        
+
     func collectionViewDelegate() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -61,7 +61,8 @@ extension PopularCollectionViewVC: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellIdentifier", for: indexPath) as! MovieCollectionViewCell
-                cell.memberNameLabel.text = data.memberName[indexPath.row]
+        cell.titleLabel.text = data.memberName[indexPath.row]
+        cell.rateLabel.text = "popular rate label"
         return cell
     }
 }

@@ -108,7 +108,5 @@ extension MovieTabVC { //API request와 관련된 함수들을 다루는 extensi
         viewModel.apiRequestTopRate (page: 1) { response in
             self.viewModel.topRateMovies = response
         }
-        
     }
-
 }

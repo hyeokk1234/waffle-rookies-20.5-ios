@@ -9,32 +9,50 @@ import Foundation
 import UIKit
 
 class MovieCollectionViewCell : UICollectionViewCell {
-    var memberNameLabel: UILabel!
+    var titleLabel = UILabel()
+    var rateLabel = UILabel()
+    var posterImage = UIImageView()
          
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setUpCell()
-        setUpLabel()
+        setUpLayout()
     }
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        setUpCell()
+        setUpLayout()
         setUpLabel()
     }
+    
+    func setUpLayout() {
+        contentView.addSubview(posterImage)
+        posterImage.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.posterImage.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10),
+            self.posterImage.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10),
+            self.posterImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            self.posterImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -100),
+        ])
         
-    func setUpCell() {
-        memberNameLabel = UILabel()
-        contentView.addSubview(memberNameLabel)
-        memberNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        memberNameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        memberNameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-        memberNameLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
-        memberNameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-        }
+        contentView.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.titleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10),
+            self.titleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10),
+            self.titleLabel.topAnchor.constraint(equalTo: posterImage.bottomAnchor, constant: 5),
+        ])
         
+        contentView.addSubview(rateLabel)
+        rateLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.rateLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10),
+            self.rateLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10),
+            self.rateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+        ])
+    }
+    
     func setUpLabel() {
-        memberNameLabel.font = UIFont.systemFont(ofSize: 32)
-        memberNameLabel.textAlignment = .center
+        titleLabel.textAlignment = .center
+        rateLabel.textAlignment = .center
     }
 }
