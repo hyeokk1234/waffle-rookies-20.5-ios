@@ -14,7 +14,6 @@ import RxCocoa
 
 class TopRatedCollectionViewVC : UIViewController {
     private var collectionView: UICollectionView!
-    private let data = Data2()
     private let viewModel : MovieVM
     let disposeBag = DisposeBag()
     
@@ -35,12 +34,8 @@ class TopRatedCollectionViewVC : UIViewController {
         
         viewModel.topRateMoviesOb
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
-                
-                cell.titleLabel.text =  item.title
-                if let vote_average = item.vote_average {
-                    cell.rateLabel.text = "\(vote_average)"
-                }
-                cell.titleLabel.adjustsFontSizeToFitWidth = true
+            
+                cell.setData(item)
             }
             .disposed(by: disposeBag)
     }

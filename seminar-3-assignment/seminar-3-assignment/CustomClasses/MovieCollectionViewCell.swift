@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 class MovieCollectionViewCell : UICollectionViewCell {
     static let identifier = "MovieCollectionViewCell"
@@ -14,6 +16,8 @@ class MovieCollectionViewCell : UICollectionViewCell {
     var titleLabel = UILabel()
     var rateLabel = UILabel()
     var posterImage = UIImageView()
+    var poster_path: String?
+    let disposeBag = DisposeBag()
          
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -24,6 +28,44 @@ class MovieCollectionViewCell : UICollectionViewCell {
         super.init(frame: .zero)
         setUpLayout()
         setUpLabel()
+    }
+    
+    func setData(_ data: MovieModel) {
+        titleLabel.text =  data.title
+        if let vote_average = data.vote_average {
+            rateLabel.text = "\(vote_average)"
+        }
+        
+        if let poster_path = data.poster_path {
+            loadImage(from: poster_path)
+                .observe(on: MainScheduler.instance)
+                .bind(to: posterImage.rx.image)
+                .disposed(by: disposeBag)
+        }
+    }
+    
+    private func loadImage(from url: String) -> Observable<UIImage?> {
+        return Observable.create { emitter in
+            let task = URLSession.shared.dataTask(with: URL(string: "https://image.tmdb.org/t/p/w500" + url)!) { data, _, error in
+                if let error = error {
+                    emitter.onError(error)
+                    return
+                }
+                guard let data = data,
+                    let image = UIImage(data: data) else {
+                    emitter.onNext(nil)
+                    emitter.onCompleted()
+                    return
+                }
+
+                emitter.onNext(image)
+                emitter.onCompleted()
+            }
+            task.resume()
+            return Disposables.create {
+                task.cancel()
+            }
+        }
     }
     
     func setUpLayout() {
@@ -38,6 +80,7 @@ class MovieCollectionViewCell : UICollectionViewCell {
         ])
         
         contentView.addSubview(titleLabel)
+        titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.titleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10),

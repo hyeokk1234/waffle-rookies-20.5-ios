@@ -31,6 +31,7 @@ class MovieVM {
         return Observable.create { emitter in
             self.apiRequestPopular(page: 1) { result in
                 if let result = result {
+                    self.popularMovies += result
                     emitter.onNext(result)
                 }
             }
@@ -42,6 +43,7 @@ class MovieVM {
         return Observable.create { emitter in
             self.apiRequestTopRate(page: 1) { result in
                 if let result = result {
+                    self.topRateMovies += result
                     emitter.onNext(result)
                 }
             }
@@ -75,7 +77,6 @@ class MovieVM {
             if let json = json {
                 completion(json.results!)
             }
-            debugPrint(response)
         }
     }
     
