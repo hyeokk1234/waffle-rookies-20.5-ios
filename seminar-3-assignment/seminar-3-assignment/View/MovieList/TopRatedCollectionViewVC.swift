@@ -64,6 +64,7 @@ extension TopRatedCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
                 viewModel.apiRequestTopRate { result in
                     if let result = result {
                         do {
+                            self.viewModel.topRateMovies += result
                             try subject.onNext(subject.value() + result)
                         } catch {
                             print("error")
@@ -71,8 +72,16 @@ extension TopRatedCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
                     }
                 }
             }
-            
         }
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
+        
+        if let image = cell.posterImage.image {
+            let movieInfoVC = MovieInfoVC(data: viewModel.topRateMovies[indexPath.row], image: image)
+            self.navigationController?.pushViewController(movieInfoVC, animated: true)
+        }
     }
 }

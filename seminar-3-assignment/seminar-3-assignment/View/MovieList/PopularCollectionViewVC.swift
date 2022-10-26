@@ -63,6 +63,7 @@ extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelega
                 viewModel.apiRequestPopular { result in
                     if let result = result {
                         do {
+                            self.viewModel.popularMovies += result
                             try subject.onNext(subject.value() + result)
                         } catch {
                             print("error")
@@ -70,8 +71,16 @@ extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelega
                     }
                 }
             }
-            
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
         
+        if let image = cell.posterImage.image {
+            let movieInfoVC = MovieInfoVC(data: viewModel.popularMovies[indexPath.row], image: image)
+            self.navigationController?.pushViewController(movieInfoVC, animated: true)
+
+        }
     }
 }
