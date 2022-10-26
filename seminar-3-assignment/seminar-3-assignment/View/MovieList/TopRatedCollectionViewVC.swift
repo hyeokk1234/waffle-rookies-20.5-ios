@@ -21,6 +21,7 @@ class TopRatedCollectionViewVC : UIViewController {
         self.viewModel = vm
         super.init(nibName: nil, bundle: nil)
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionViewFlowLayout())
+        collectionView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -53,3 +54,25 @@ class TopRatedCollectionViewVC : UIViewController {
     
 }
 
+extension TopRatedCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelegate  {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if (position > (collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
+            
+            let subject = viewModel.topRateMoviesOb
+            if (viewModel.paginationFlag) {
+                viewModel.apiRequestTopRate { result in
+                    if let result = result {
+                        do {
+                            try subject.onNext(subject.value() + result)
+                        } catch {
+                            print("error")
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+    }
+}

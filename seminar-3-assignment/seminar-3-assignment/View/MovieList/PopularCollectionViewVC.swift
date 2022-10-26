@@ -18,10 +18,10 @@ class PopularCollectionViewVC : UIViewController {
     let disposeBag = DisposeBag()
     
     init(vm: MovieVM) {
-        
         self.viewModel = vm
         super.init(nibName: nil, bundle: nil)
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionViewFlowLayout())
+        collectionView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -53,3 +53,25 @@ class PopularCollectionViewVC : UIViewController {
     }
 }
 
+extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelegate  {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if (position > (collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
+            
+            let subject = viewModel.popularMoviesOb
+            if (viewModel.paginationFlag) {
+                viewModel.apiRequestPopular { result in
+                    if let result = result {
+                        do {
+                            try subject.onNext(subject.value() + result)
+                        } catch {
+                            print("error")
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+    }
+}

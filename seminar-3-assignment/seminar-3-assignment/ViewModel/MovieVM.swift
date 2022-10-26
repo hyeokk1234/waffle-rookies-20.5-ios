@@ -11,11 +11,17 @@ import Alamofire
 import RxSwift
 
 class MovieVM {
+    //한 번에 API 계속 호출되는걸 방지하기 위한 boolean flag
+    var paginationFlag = true
+    
+    var popularCallCount : Int = 1
+    var topRateCallCount : Int = 1
+    
     var popularMovies : [MovieModel] = []
-    var popularMoviesOb = PublishSubject<[MovieModel]>()
+    var popularMoviesOb = BehaviorSubject<[MovieModel]>(value: [])
     
     var topRateMovies : [MovieModel] = []
-    var topRateMoviesOb = PublishSubject<[MovieModel]>()
+    var topRateMoviesOb = BehaviorSubject<[MovieModel]>(value: [])
     
     var favorites : [MovieModel] = []
     let myApiKey = "ec79d7d5a25b0af54c4a226f6a59dafc"
@@ -29,9 +35,9 @@ class MovieVM {
     
     func rxPopularApiRequest() -> Observable<[MovieModel]> {
         return Observable.create { emitter in
-            self.apiRequestPopular(page: 1) { result in
+            self.apiRequestPopular { result in
                 if let result = result {
-                    self.popularMovies += result
+                    self.popularMovies = result
                     emitter.onNext(result)
                 }
             }
@@ -41,9 +47,9 @@ class MovieVM {
     
     func rxTopRateApiRequest() -> Observable<[MovieModel]> {
         return Observable.create { emitter in
-            self.apiRequestTopRate(page: 1) { result in
+            self.apiRequestTopRate { result in
                 if let result = result {
-                    self.topRateMovies += result
+                    self.topRateMovies = result
                     emitter.onNext(result)
                 }
             }
@@ -53,7 +59,10 @@ class MovieVM {
     
     //메서드는 GET
     // 주소/movie/popular? 뒤에 query들
-    func apiRequestPopular(page: Int, completion: @escaping ([MovieModel]?) -> Void) {
+    func apiRequestPopular(completion: @escaping ([MovieModel]?) -> Void) {
+        self.paginationFlag = false
+        let page = self.popularCallCount
+        
         let finalUrl = "https://api.themoviedb.org/3/movie/popular?api_key=\(myApiKey)&language=en-US&page=\(page)"
         
         AF.request(finalUrl, method: .get).responseData { response in
@@ -75,6 +84,8 @@ class MovieVM {
             }
             
             if let json = json {
+                self.paginationFlag = true
+                self.popularCallCount+=1
                 completion(json.results!)
             }
         }
@@ -82,7 +93,10 @@ class MovieVM {
     
     //메서드는 GET
     // 주소/movie/top_rated? 뒤에 query들
-    func apiRequestTopRate(page: Int, completion: @escaping ([MovieModel]?) -> Void) {
+    func apiRequestTopRate(completion: @escaping ([MovieModel]?) -> Void) {
+        self.paginationFlag = false
+        let page = self.topRateCallCount
+        
         let finalUrl = "https://api.themoviedb.org/3/movie/top_rated?api_key=\(myApiKey)&language=en-US&page=\(page)"
         
         AF.request(finalUrl, method: .get).responseData { response in
@@ -104,9 +118,10 @@ class MovieVM {
             }
             
             if let json = json {
+                self.paginationFlag = true
+                self.topRateCallCount += 1
                 completion(json.results!)
             }
-            debugPrint(response)
         }
     }
 }
