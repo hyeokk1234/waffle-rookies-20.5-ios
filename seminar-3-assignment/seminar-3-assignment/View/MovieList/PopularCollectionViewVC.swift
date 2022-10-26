@@ -9,13 +9,17 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 class PopularCollectionViewVC : UIViewController {
     private var collectionView: UICollectionView!
     private let data = Data()
     private let viewModel : MovieVM
+    let disposeBag = DisposeBag()
     
     init(vm: MovieVM) {
+        
         self.viewModel = vm
         super.init(nibName: nil, bundle: nil)
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionViewFlowLayout())
@@ -26,10 +30,20 @@ class PopularCollectionViewVC : UIViewController {
     }
     
     override func viewDidLoad() {
-            super.viewDidLoad()
-            configureCollectionView()
-            registerCollectionView()
-            collectionViewDelegate()
+        super.viewDidLoad()
+        configureCollectionView()
+        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
+
+        viewModel.popularMoviesOb
+            .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
+                
+                cell.titleLabel.text =  item.title
+                if let vote_average = item.vote_average {
+                    cell.rateLabel.text = "\(vote_average)"
+                }
+                cell.titleLabel.adjustsFontSizeToFitWidth = true
+            }
+            .disposed(by: disposeBag)
     }
 
     func configureCollectionView() {
@@ -42,27 +56,5 @@ class PopularCollectionViewVC : UIViewController {
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])
     }
-    
-    func registerCollectionView() {
-        collectionView.register(MovieCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "cellIdentifier")
-    }
-
-    func collectionViewDelegate() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-    }
 }
 
-extension PopularCollectionViewVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.memberName.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellIdentifier", for: indexPath) as! MovieCollectionViewCell
-        cell.titleLabel.text = data.memberName[indexPath.row]
-        cell.rateLabel.text = "popular rate label"
-        return cell
-    }
-}

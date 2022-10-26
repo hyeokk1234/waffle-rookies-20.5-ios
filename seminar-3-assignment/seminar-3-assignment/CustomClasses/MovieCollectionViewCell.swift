@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 class MovieCollectionViewCell : UICollectionViewCell {
+    static let identifier = "MovieCollectionViewCell"
+
     var titleLabel = UILabel()
     var rateLabel = UILabel()
     var posterImage = UIImageView()
@@ -25,6 +27,7 @@ class MovieCollectionViewCell : UICollectionViewCell {
     }
     
     func setUpLayout() {
+        self.backgroundColor = .gray
         contentView.addSubview(posterImage)
         posterImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

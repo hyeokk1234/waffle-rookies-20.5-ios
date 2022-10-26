@@ -47,8 +47,6 @@ class MovieTabVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLayout()
-        sendApiRequest()
-    
     }
 }
 
@@ -96,17 +94,5 @@ extension MovieTabVC {
     
     @objc private func didChangeValue(segment: UISegmentedControl) {
         self.shouldHidePopularView = segment.selectedSegmentIndex != 0
-    }
-}
-
-extension MovieTabVC { //API request와 관련된 함수들을 다루는 extension
-    func sendApiRequest() {
-        viewModel.apiRequestPopular (page: 1) { response in
-            self.viewModel.popularMovies = response
-        }
-        
-        viewModel.apiRequestTopRate (page: 1) { response in
-            self.viewModel.topRateMovies = response
-        }
     }
 }

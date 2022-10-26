@@ -9,11 +9,14 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 class TopRatedCollectionViewVC : UIViewController {
     private var collectionView: UICollectionView!
     private let data = Data2()
     private let viewModel : MovieVM
+    let disposeBag = DisposeBag()
     
     init(vm: MovieVM) {
         self.viewModel = vm
@@ -26,10 +29,20 @@ class TopRatedCollectionViewVC : UIViewController {
     }
     
     override func viewDidLoad() {
-            super.viewDidLoad()
-            configureCollectionView()
-            registerCollectionView()
-            collectionViewDelegate()
+        super.viewDidLoad()
+        configureCollectionView()
+        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
+        
+        viewModel.topRateMoviesOb
+            .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
+                
+                cell.titleLabel.text =  item.title
+                if let vote_average = item.vote_average {
+                    cell.rateLabel.text = "\(vote_average)"
+                }
+                cell.titleLabel.adjustsFontSizeToFitWidth = true
+            }
+            .disposed(by: disposeBag)
     }
 
     func configureCollectionView() {
@@ -43,27 +56,5 @@ class TopRatedCollectionViewVC : UIViewController {
         ])
     }
     
-    func registerCollectionView() {
-        collectionView.register(MovieCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "cellIdentifier")
-    }
-        
-    func collectionViewDelegate() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-    }
-}
-
-extension TopRatedCollectionViewVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.memberName.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellIdentifier", for: indexPath) as! MovieCollectionViewCell
-        cell.titleLabel.text = data.memberName[indexPath.row]
-        cell.rateLabel.text = "toprate rate label"
-        return cell
-    }
 }
 
