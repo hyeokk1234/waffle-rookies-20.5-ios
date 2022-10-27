@@ -23,7 +23,20 @@ class MovieVM {
     var topRateMovies : [MovieModel] = []
     var topRateMoviesOb = BehaviorSubject<[MovieModel]>(value: [])
     
-    var favorites : [MovieModel] = []
+    var favorites : [MovieModel] {
+        get {
+            var previousFavorites: [MovieModel]?
+            if let data = UserDefaults.standard.value(forKey: "favorites") as? Data {
+                previousFavorites = try? PropertyListDecoder().decode([MovieModel].self, from: data)
+            }
+            return previousFavorites ?? []
+        }
+        set {
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey:"favorites")
+        }
+    }
+    var favoritesOb = BehaviorSubject<[MovieModel]>(value: [])
+    
     let myApiKey = "ec79d7d5a25b0af54c4a226f6a59dafc"
     
     init() {
@@ -31,6 +44,12 @@ class MovieVM {
             .bind(to: popularMoviesOb)
         _ = rxTopRateApiRequest()
             .bind(to: topRateMoviesOb)
+        
+        let favoriteObservable = Observable<[MovieModel]>.create { emitter in
+            emitter.onNext(self.favorites)
+            return Disposables.create()
+        }
+        _ = favoriteObservable.bind(to: favoritesOb)
     }
     
     func rxPopularApiRequest() -> Observable<[MovieModel]> {
@@ -86,7 +105,12 @@ class MovieVM {
             if let json = json {
                 self.paginationFlag = true
                 self.popularCallCount+=1
-                completion(json.results!)
+                
+                var result: [MovieModel] = []
+                for movieDecoder in json.results! {
+                    result.append(MovieModel(movieDecoder: movieDecoder))
+                }
+                completion(result)
             }
         }
     }
@@ -120,7 +144,13 @@ class MovieVM {
             if let json = json {
                 self.paginationFlag = true
                 self.topRateCallCount += 1
-                completion(json.results!)
+                
+                var result: [MovieModel] = []
+                for movieDecoder in json.results! {
+                    result.append(MovieModel(movieDecoder: movieDecoder))
+                }
+                
+                completion(result)
             }
         }
     }

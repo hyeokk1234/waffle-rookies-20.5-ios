@@ -16,8 +16,11 @@ class MovieInfoVC : UIViewController {
     let titleLabel = UILabel()
     let rateLabel = UILabel()
     let overviewLabel = UILabel()
+    let movieModel: MovieModel
+
     
-    init(data : MovieModel, image: UIImage) {
+    init(vm: MovieVM, data : MovieModel, image: UIImage) {
+        movieModel = data
         super.init(nibName: nil, bundle: nil)
         titleLabel.text = data.title
         if let vote_average = data.vote_average {
@@ -25,9 +28,6 @@ class MovieInfoVC : UIViewController {
         }
         posterImage.image = image
         overviewLabel.text = data.overview
-        
-        
-        
     }
     
     required init?(coder: NSCoder) {
@@ -41,12 +41,15 @@ class MovieInfoVC : UIViewController {
     }
     
     func setUpLayout() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
+
+
         self.view.addSubview(posterImage)
         posterImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.posterImage.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 50),
             self.posterImage.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: -50),
-            self.posterImage.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            self.posterImage.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
             self.posterImage.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -300),
         ])
         
@@ -84,8 +87,11 @@ class MovieInfoVC : UIViewController {
             self.overviewLabel.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 50),
             self.overviewLabel.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: -50),
             self.overviewLabel.topAnchor.constraint(equalTo: self.rateLabel.bottomAnchor, constant: 10),
-            self.overviewLabel.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            self.overviewLabel.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
         ])
     }
     
+    @objc func favoriteButtonTapped() {
+        print("tap!")
+    }
 }

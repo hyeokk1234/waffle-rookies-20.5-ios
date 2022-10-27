@@ -80,7 +80,7 @@ extension TopRatedCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
         let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
         
         if let image = cell.posterImage.image {
-            let movieInfoVC = MovieInfoVC(data: viewModel.topRateMovies[indexPath.row], image: image)
+            let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.topRateMovies[indexPath.row], image: image)
             self.navigationController?.pushViewController(movieInfoVC, animated: true)
         }
     }
