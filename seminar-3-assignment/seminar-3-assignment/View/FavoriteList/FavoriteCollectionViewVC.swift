@@ -33,7 +33,7 @@ class FavoriteCollectionViewVC : UIViewController {
         configureCollectionView()
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
         
-        viewModel.favoritesOb
+        viewModel.favoritesSubject
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
             
                 cell.setData(item)
@@ -42,7 +42,7 @@ class FavoriteCollectionViewVC : UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        viewModel.favoritesOb.onNext(viewModel.favorites)
+        viewModel.favoritesSubject.onNext(viewModel.favorites)
     }
     
     func configureCollectionView() {

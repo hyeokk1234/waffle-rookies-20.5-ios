@@ -18,10 +18,10 @@ class MovieVM {
     var topRateCallCount : Int = 1
     
     var popularMovies : [MovieModel] = []
-    var popularMoviesOb = BehaviorSubject<[MovieModel]>(value: [])
+    var popularMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
     var topRateMovies : [MovieModel] = []
-    var topRateMoviesOb = BehaviorSubject<[MovieModel]>(value: [])
+    var topRateMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
     var favorites : [MovieModel] {
         get {
@@ -36,15 +36,15 @@ class MovieVM {
         }
     }
     
-    var favoritesOb = BehaviorSubject<[MovieModel]>(value: [])
+    var favoritesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
     let myApiKey = "ec79d7d5a25b0af54c4a226f6a59dafc"
     
     init() {
         _ = rxPopularApiRequest()
-            .bind(to: popularMoviesOb)
+            .bind(to: popularMoviesSubject)
         _ = rxTopRateApiRequest()
-            .bind(to: topRateMoviesOb)
+            .bind(to: topRateMoviesSubject)
         
         let favoriteObservable = Observable<[MovieModel]>
             .create { emitter in
@@ -53,7 +53,7 @@ class MovieVM {
                 return Disposables.create()
             }
         
-        _ = favoriteObservable.bind(to: favoritesOb)
+        _ = favoriteObservable.bind(to: favoritesSubject)
     }
     
     func rxPopularApiRequest() -> Observable<[MovieModel]> {

@@ -33,7 +33,7 @@ class TopRatedCollectionViewVC : UIViewController {
         configureCollectionView()
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
         
-        viewModel.topRateMoviesOb
+        viewModel.topRateMoviesSubject
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
             
                 cell.setData(item)
@@ -59,7 +59,7 @@ extension TopRatedCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
         let position = scrollView.contentOffset.y
         if (position > (collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
             
-            let subject = viewModel.topRateMoviesOb
+            let subject = viewModel.topRateMoviesSubject
             if (viewModel.paginationFlag) {
                 viewModel.apiRequestTopRate { result in
                     if let result = result {

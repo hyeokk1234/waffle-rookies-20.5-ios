@@ -33,7 +33,7 @@ class PopularCollectionViewVC : UIViewController {
         configureCollectionView()
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
 
-        viewModel.popularMoviesOb //이 popularMoviesOb이 BehaviorSubject
+        viewModel.popularMoviesSubject //이 popularMoviesOb이 BehaviorSubject
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
                 
                 cell.setData(item) //Custom Cell에서 제목, 평점, 포스터등 처리하는 함수
@@ -58,7 +58,7 @@ extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelega
         let position = scrollView.contentOffset.y
         if (position > (collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
             
-            let subject = viewModel.popularMoviesOb
+            let subject = viewModel.popularMoviesSubject
             if (viewModel.paginationFlag) {
                 viewModel.apiRequestPopular { result in
                     if let result = result {
