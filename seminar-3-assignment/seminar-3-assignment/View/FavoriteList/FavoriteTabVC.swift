@@ -9,12 +9,16 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 class FavoriteTabVC : UIViewController {
     let viewModel : MovieVM
+    let favoriteVC : FavoriteCollectionViewVC
     
     init(vm : MovieVM) {
         self.viewModel = vm
+        favoriteVC = FavoriteCollectionViewVC(vm: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -31,6 +35,18 @@ class FavoriteTabVC : UIViewController {
 extension FavoriteTabVC {
     func setUpLayout() {
         self.navigationItem.title = "Favorites"
+        
+        self.addChild(favoriteVC)
+        self.view.addSubview(favoriteVC.view)
+
+        favoriteVC.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.favoriteVC.view.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0),
+            self.favoriteVC.view.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: 0),
+            self.favoriteVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            self.favoriteVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+        ])
+        favoriteVC.didMove(toParent: self)
 
     }
 }

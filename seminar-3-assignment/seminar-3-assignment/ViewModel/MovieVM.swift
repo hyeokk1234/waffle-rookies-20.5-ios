@@ -35,6 +35,7 @@ class MovieVM {
             UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey:"favorites")
         }
     }
+    
     var favoritesOb = BehaviorSubject<[MovieModel]>(value: [])
     
     let myApiKey = "ec79d7d5a25b0af54c4a226f6a59dafc"
@@ -45,10 +46,13 @@ class MovieVM {
         _ = rxTopRateApiRequest()
             .bind(to: topRateMoviesOb)
         
-        let favoriteObservable = Observable<[MovieModel]>.create { emitter in
-            emitter.onNext(self.favorites)
-            return Disposables.create()
-        }
+        let favoriteObservable = Observable<[MovieModel]>
+            .create { emitter in
+                emitter.onNext(self.favorites)
+            
+                return Disposables.create()
+            }
+        
         _ = favoriteObservable.bind(to: favoritesOb)
     }
     
@@ -105,12 +109,7 @@ class MovieVM {
             if let json = json {
                 self.paginationFlag = true
                 self.popularCallCount+=1
-                
-                var result: [MovieModel] = []
-                for movieDecoder in json.results! {
-                    result.append(MovieModel(movieDecoder: movieDecoder))
-                }
-                completion(result)
+                completion(json.results!)
             }
         }
     }
@@ -145,12 +144,7 @@ class MovieVM {
                 self.paginationFlag = true
                 self.topRateCallCount += 1
                 
-                var result: [MovieModel] = []
-                for movieDecoder in json.results! {
-                    result.append(MovieModel(movieDecoder: movieDecoder))
-                }
-                
-                completion(result)
+                completion(json.results!)
             }
         }
     }

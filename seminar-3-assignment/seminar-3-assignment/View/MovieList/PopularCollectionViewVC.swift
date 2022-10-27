@@ -13,14 +13,14 @@ import RxSwift
 import RxCocoa
 
 class PopularCollectionViewVC : UIViewController {
-    private var collectionView: UICollectionView!
+    private let collectionView: UICollectionView!
     private let viewModel : MovieVM
     let disposeBag = DisposeBag()
     
     init(vm: MovieVM) {
         self.viewModel = vm
-        super.init(nibName: nil, bundle: nil)
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: CollectionViewFlowLayout())
+        super.init(nibName: nil, bundle: nil)
         collectionView.delegate = self
     }
     

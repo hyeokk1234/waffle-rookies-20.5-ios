@@ -12,14 +12,19 @@ import Foundation
 import UIKit
 
 class MovieInfoVC : UIViewController {
+    let viewModel : MovieVM
+    
     let posterImage = UIImageView()
     let titleLabel = UILabel()
     let rateLabel = UILabel()
     let overviewLabel = UILabel()
     let movieModel: MovieModel
+    
+//    var favoriteIndex : Int?
 
     
     init(vm: MovieVM, data : MovieModel, image: UIImage) {
+        viewModel = vm
         movieModel = data
         super.init(nibName: nil, bundle: nil)
         titleLabel.text = data.title
@@ -41,8 +46,11 @@ class MovieInfoVC : UIViewController {
     }
     
     func setUpLayout() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
-
+        if (checkExistenceIfExistReturnIndex() != nil) { //존재하는경우
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
+        }
 
         self.view.addSubview(posterImage)
         posterImage.translatesAutoresizingMaskIntoConstraints = false
@@ -91,7 +99,23 @@ class MovieInfoVC : UIViewController {
         ])
     }
     
+    func checkExistenceIfExistReturnIndex() -> Int? {
+        for (index, movie) in viewModel.favorites.enumerated() {
+            if (movie.title == movieModel.title) {
+                return index
+            }
+        }
+        return nil
+    }
+    
     @objc func favoriteButtonTapped() {
-        print("tap!")
+        let targetIndex = checkExistenceIfExistReturnIndex()
+        if ( targetIndex != nil) { //존재하는경우
+            viewModel.favorites.remove(at: targetIndex!)
+            navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star")
+        } else {
+            viewModel.favorites.append(movieModel)
+            navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star.fill")
+        }
     }
 }
