@@ -45,6 +45,10 @@ class MovieInfoVC : UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        checkExistenceSetButtonDesign()
+    }
+    
     func setUpLayout() {
         if (checkExistenceIfExistReturnIndex() != nil) { //존재하는경우
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
@@ -108,12 +112,22 @@ class MovieInfoVC : UIViewController {
         return nil
     }
     
+    func checkExistenceSetButtonDesign() {
+        let targetIndex = checkExistenceIfExistReturnIndex()
+        if ( targetIndex != nil) { //존재하는경우: star 색칠하기
+            navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star.fill")
+        } else { //존재하지 않는 경우: star 색 빼주기
+            navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star")
+        }
+    }
+    
+    
     @objc func favoriteButtonTapped() {
         let targetIndex = checkExistenceIfExistReturnIndex()
-        if ( targetIndex != nil) { //존재하는경우
+        if ( targetIndex != nil) { //존재하는경우: 삭제를 해줘야함.
             viewModel.favorites.remove(at: targetIndex!)
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star")
-        } else {
+        } else { //아직 없으면: 새로 넣어줘야함.
             viewModel.favorites.append(movieModel)
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star.fill")
         }

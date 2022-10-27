@@ -33,10 +33,10 @@ class PopularCollectionViewVC : UIViewController {
         configureCollectionView()
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
 
-        viewModel.popularMoviesOb
+        viewModel.popularMoviesOb //이 popularMoviesOb이 BehaviorSubject
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
                 
-                cell.setData(item)
+                cell.setData(item) //Custom Cell에서 제목, 평점, 포스터등 처리하는 함수
             }
             .disposed(by: disposeBag)
     }
