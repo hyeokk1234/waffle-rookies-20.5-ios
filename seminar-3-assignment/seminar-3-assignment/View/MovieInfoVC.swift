@@ -141,5 +141,7 @@ class MovieInfoVC : UIViewController {
         if let encoded = try? encoder.encode(viewModel.favorites) {
             UserDefaults.standard.set(encoded, forKey: "favorites")
         }
+        
+        UserDefaults.standard.synchronize()
     }
 }
