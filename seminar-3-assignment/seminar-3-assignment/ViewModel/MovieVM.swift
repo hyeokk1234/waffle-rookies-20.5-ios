@@ -23,24 +23,37 @@ class MovieVM {
     var topRateMovies : [MovieModel] = []
     var topRateMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
-    var favorites : [MovieModel] {
-        get {
-            var previousFavorites: [MovieModel]?
-            if let data = UserDefaults.standard.value(forKey: "favorites") as? Data {
-                previousFavorites = try? PropertyListDecoder().decode([MovieModel].self, from: data)
-            }
-            return previousFavorites ?? []
-        }
-        set {
-            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey:"favorites")
-        }
-    }
+    var favorites: [MovieModel]
+//    var favorites : [MovieModel] {
+//        get {
+//            var previousFavorites: [MovieModel]?
+//            if let data = UserDefaults.standard.value(forKey: "favorites") as? Data {
+//                previousFavorites = try? PropertyListDecoder().decode([MovieModel].self, from: data)
+//            }
+//            return previousFavorites ?? []
+//        }
+//        set {
+//            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey:"favorites")
+//        }
+//    }
     
     var favoritesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
     let myApiKey = "ec79d7d5a25b0af54c4a226f6a59dafc"
     
     init() {
+        if let objects = UserDefaults.standard.value(forKey: "favorites") as? Data {
+            let decoder = JSONDecoder()
+            if let favoritesDecoded = try? decoder.decode(Array.self, from: objects) as [MovieModel] {
+                favorites = favoritesDecoded
+            } else {
+                favorites = [MovieModel]()
+            }
+        } else {
+            favorites = [MovieModel]()
+        }
+        
+        
         _ = rxPopularApiRequest()
             .bind(to: popularMoviesSubject)
         _ = rxTopRateApiRequest()

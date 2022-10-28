@@ -126,10 +126,20 @@ class MovieInfoVC : UIViewController {
         let targetIndex = checkExistenceIfExistReturnIndex()
         if ( targetIndex != nil) { //존재하는경우: 삭제를 해줘야함.
             viewModel.favorites.remove(at: targetIndex!)
+            saveUserDefaults()
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star")
         } else { //아직 없으면: 새로 넣어줘야함.
             viewModel.favorites.append(movieModel)
+            saveUserDefaults()
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star.fill")
+        }
+    }
+    
+    func saveUserDefaults() {
+        let encoder = JSONEncoder()
+
+        if let encoded = try? encoder.encode(viewModel.favorites) {
+            UserDefaults.standard.set(encoded, forKey: "favorites")
         }
     }
 }
