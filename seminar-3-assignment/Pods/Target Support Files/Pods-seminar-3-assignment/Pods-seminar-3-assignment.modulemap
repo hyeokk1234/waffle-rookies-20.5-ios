@@ -1,0 +1,6 @@
+framework module Pods_seminar_3_assignment {
+  umbrella header "Pods-seminar-3-assignment-umbrella.h"
+
+  export *
+  module * { export * }
+}
