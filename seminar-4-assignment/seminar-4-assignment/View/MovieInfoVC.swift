@@ -55,7 +55,8 @@ class MovieInfoVC : UIViewController {
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
         }
-
+        
+        self.view.backgroundColor = .white
         self.view.addSubview(posterImage)
         posterImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
