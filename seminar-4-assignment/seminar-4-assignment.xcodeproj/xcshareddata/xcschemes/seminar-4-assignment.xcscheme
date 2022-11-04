@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1300"
+   LastUpgradeVersion = "1340"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4A04D1BE5AD31AF9E0E6A20B8059647C"
-               BuildableName = "Pods_seminar_3_assignment.framework"
-               BlueprintName = "Pods-seminar-3-assignment"
-               ReferencedContainer = "container:Pods.xcodeproj">
+               BlueprintIdentifier = "5C9495C428F1327D005610EA"
+               BuildableName = "seminar-4-assignment.app"
+               BlueprintName = "seminar-4-assignment"
+               ReferencedContainer = "container:seminar-4-assignment.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -40,6 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5C9495C428F1327D005610EA"
+            BuildableName = "seminar-4-assignment.app"
+            BlueprintName = "seminar-4-assignment"
+            ReferencedContainer = "container:seminar-4-assignment.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -47,6 +57,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5C9495C428F1327D005610EA"
+            BuildableName = "seminar-4-assignment.app"
+            BlueprintName = "seminar-4-assignment"
+            ReferencedContainer = "container:seminar-4-assignment.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
