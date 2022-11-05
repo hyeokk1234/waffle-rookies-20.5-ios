@@ -32,13 +32,7 @@ class FavoriteCollectionViewVC : UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
-        
-        viewModel.favoritesSubject
-            .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
-            
-                cell.setData(item)
-            }
-            .disposed(by: disposeBag)
+        bindToSubject()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,5 +59,14 @@ extension FavoriteCollectionViewVC : UICollectionViewDelegate {
             let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.favorites[indexPath.row], image: image)
             self.navigationController?.pushViewController(movieInfoVC, animated: true)
         }
+    }
+    
+    func bindToSubject() {
+        viewModel.favoritesSubject
+            .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
+            
+                cell.setData(item)
+            }
+            .disposed(by: disposeBag)
     }
 }

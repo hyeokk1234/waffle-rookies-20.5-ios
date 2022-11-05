@@ -32,13 +32,7 @@ class PopularCollectionViewVC : UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
-
-        viewModel.popularMoviesSubject //이 popularMoviesOb이 BehaviorSubject
-            .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
-                
-                cell.setData(item) //Custom Cell에서 제목, 평점, 포스터등 처리하는 함수
-            }
-            .disposed(by: disposeBag)
+        bindToSubject()
     }
 
     func configureCollectionView() {
@@ -81,5 +75,13 @@ extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelega
             let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.popularMovies[indexPath.row], image: image)
             self.navigationController?.pushViewController(movieInfoVC, animated: true)
         }
+    }
+    
+    func bindToSubject() {
+        viewModel.popularMoviesSubject
+            .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
+                cell.setData(item)
+            }
+            .disposed(by: disposeBag)
     }
 }

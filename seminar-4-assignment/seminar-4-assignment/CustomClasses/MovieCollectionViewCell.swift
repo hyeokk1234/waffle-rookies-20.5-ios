@@ -22,12 +22,13 @@ class MovieCollectionViewCell : UICollectionViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setUpLayout()
+        setUpLabels()
     }
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setUpLayout()
-        setUpLabel()
+        setUpLabels()
     }
     
     func setData(_ data: MovieModel) {
@@ -68,7 +69,7 @@ class MovieCollectionViewCell : UICollectionViewCell {
         }
     }
     
-    func setUpLayout() {
+    private func setUpLayout() {
         self.backgroundColor = .gray
         contentView.addSubview(posterImage)
         posterImage.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +98,7 @@ class MovieCollectionViewCell : UICollectionViewCell {
         ])
     }
     
-    func setUpLabel() {
+    private func setUpLabels() {
         titleLabel.textAlignment = .center
         rateLabel.textAlignment = .center
     }

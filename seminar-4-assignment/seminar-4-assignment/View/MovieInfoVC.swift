@@ -20,19 +20,11 @@ class MovieInfoVC : UIViewController {
     let overviewLabel = UILabel()
     let movieModel: MovieModel
     
-//    var favoriteIndex : Int?
-
-    
     init(vm: MovieVM, data : MovieModel, image: UIImage) {
         viewModel = vm
         movieModel = data
         super.init(nibName: nil, bundle: nil)
-        titleLabel.text = data.title
-        if let vote_average = data.vote_average {
-            rateLabel.text = "\(vote_average)"
-        }
-        posterImage.image = image
-        overviewLabel.text = data.overview
+        setData(data: data, image: image)
     }
     
     required init?(coder: NSCoder) {
@@ -42,14 +34,22 @@ class MovieInfoVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLayout()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         checkExistenceSetButtonDesign()
     }
     
-    func setUpLayout() {
+    private func setData(data: MovieModel, image: UIImage) {
+        titleLabel.text = data.title
+        if let vote_average = data.vote_average {
+            rateLabel.text = "\(vote_average)"
+        }
+        posterImage.image = image
+        overviewLabel.text = data.overview
+    }
+    
+    private func setUpLayout() {
         if (checkExistenceIfExistReturnIndex() != nil) { //존재하는경우
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
         } else {
@@ -104,7 +104,7 @@ class MovieInfoVC : UIViewController {
         ])
     }
     
-    func checkExistenceIfExistReturnIndex() -> Int? {
+    private func checkExistenceIfExistReturnIndex() -> Int? {
         for (index, movie) in viewModel.favorites.enumerated() {
             if (movie.title == movieModel.title) {
                 return index
@@ -113,7 +113,7 @@ class MovieInfoVC : UIViewController {
         return nil
     }
     
-    func checkExistenceSetButtonDesign() {
+    private func checkExistenceSetButtonDesign() {
         let targetIndex = checkExistenceIfExistReturnIndex()
         if ( targetIndex != nil) { //존재하는경우: star 색칠하기
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star.fill")

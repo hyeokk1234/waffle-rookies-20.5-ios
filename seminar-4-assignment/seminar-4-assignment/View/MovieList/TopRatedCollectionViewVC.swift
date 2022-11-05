@@ -32,13 +32,7 @@ class TopRatedCollectionViewVC : UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
-        
-        viewModel.topRateMoviesSubject
-            .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
-            
-                cell.setData(item)
-            }
-            .disposed(by: disposeBag)
+        bindToSubject()
     }
 
     func configureCollectionView() {
@@ -83,5 +77,13 @@ extension TopRatedCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
             let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.topRateMovies[indexPath.row], image: image)
             self.navigationController?.pushViewController(movieInfoVC, animated: true)
         }
+    }
+    
+    func bindToSubject() {
+        viewModel.topRateMoviesSubject
+            .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
+                cell.setData(item)
+            }
+            .disposed(by: disposeBag)
     }
 }

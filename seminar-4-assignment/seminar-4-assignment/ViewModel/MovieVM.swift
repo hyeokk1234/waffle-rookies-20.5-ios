@@ -24,18 +24,6 @@ class MovieVM {
     var topRateMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
     var favorites: [MovieModel]
-//    var favorites : [MovieModel] {
-//        get {
-//            var previousFavorites: [MovieModel]?
-//            if let data = UserDefaults.standard.value(forKey: "favorites") as? Data {
-//                previousFavorites = try? PropertyListDecoder().decode([MovieModel].self, from: data)
-//            }
-//            return previousFavorites ?? []
-//        }
-//        set {
-//            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey:"favorites")
-//        }
-//    }
     
     var favoritesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
