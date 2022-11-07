@@ -23,6 +23,7 @@
 		5CAA775228F1577C00E91640 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAA775128F1577C00E91640 /* MovieCollectionViewCell.swift */; };
 		5CAA775528F1579E00E91640 /* CollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAA775428F1579E00E91640 /* CollectionViewFlowLayout.swift */; };
 		5CAA775728F15C4D00E91640 /* FavoriteCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAA775628F15C4D00E91640 /* FavoriteCollectionViewVC.swift */; };
+		5CE281A429194366008205DA /* MovieUsercase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE281A329194366008205DA /* MovieUsercase.swift */; };
 		A1A3314144BDFB4EB186EB22 /* Pods_seminar_4_assignment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C8BEE230D7033AFD8C15C /* Pods_seminar_4_assignment.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		5CAA775128F1577C00E91640 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		5CAA775428F1579E00E91640 /* CollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		5CAA775628F15C4D00E91640 /* FavoriteCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCollectionViewVC.swift; sourceTree = "<group>"; };
+		5CE281A329194366008205DA /* MovieUsercase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieUsercase.swift; sourceTree = "<group>"; };
 		77A77A809F3381E826791145 /* Pods-seminar-4-assignment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seminar-4-assignment.debug.xcconfig"; path = "Target Support Files/Pods-seminar-4-assignment/Pods-seminar-4-assignment.debug.xcconfig"; sourceTree = "<group>"; };
 		DB50DBCC34877732410A9B4B /* Pods-seminar-3-assignment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seminar-3-assignment.release.xcconfig"; path = "Target Support Files/Pods-seminar-3-assignment/Pods-seminar-3-assignment.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				5CAA774328F1563200E91640 /* MovieVM.swift */,
+				5CE281A329194366008205DA /* MovieUsercase.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				5CAA775728F15C4D00E91640 /* FavoriteCollectionViewVC.swift in Sources */,
 				5CAA775528F1579E00E91640 /* CollectionViewFlowLayout.swift in Sources */,
 				5CAA774428F1563200E91640 /* MovieVM.swift in Sources */,
+				5CE281A429194366008205DA /* MovieUsercase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

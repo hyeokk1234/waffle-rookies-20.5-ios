@@ -12,6 +12,7 @@ import RxSwift
 
 class MovieVM {
     //한 번에 API 계속 호출되는걸 방지하기 위한 boolean flag
+    let movieUsecase : MovieUsecase
     var paginationFlag = true
     
     var popularCallCount : Int = 1
@@ -29,7 +30,9 @@ class MovieVM {
     
     let myApiKey = "ec79d7d5a25b0af54c4a226f6a59dafc"
     
-    init() {
+    init(movieUsecase: MovieUsecase) {
+        self.movieUsecase = movieUsecase
+        
         if let objects = UserDefaults.standard.value(forKey: "favorites") as? Data {
             let decoder = JSONDecoder()
             if let favoritesDecoded = try? decoder.decode(Array.self, from: objects) as [MovieModel] {
@@ -40,7 +43,6 @@ class MovieVM {
         } else {
             favorites = [MovieModel]()
         }
-        
         
         _ = rxPopularApiRequest()
             .bind(to: popularMoviesSubject)
