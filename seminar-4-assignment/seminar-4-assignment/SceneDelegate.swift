@@ -19,7 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let repository = Repository()
         let movieUsecase = MovieUsecase(repository: repository)
-        let vm = MovieVM(movieUsecase: movieUsecase)
+        let favoriteUsecase = FavoriteUsecase()
+        let vm = MovieVM(movieUsecase: movieUsecase, favoriteUsecase: favoriteUsecase)
         
         window?.rootViewController = MovieTabbarVC(vm: vm)
         window?.makeKeyAndVisible()
