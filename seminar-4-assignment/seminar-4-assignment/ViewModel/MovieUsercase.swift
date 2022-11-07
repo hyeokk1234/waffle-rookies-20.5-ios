@@ -8,5 +8,9 @@
 import Foundation
 
 class MovieUsecase {
+    let repository : Repository
     
+    init(repository : Repository) {
+        self.repository = repository
+    }
 }

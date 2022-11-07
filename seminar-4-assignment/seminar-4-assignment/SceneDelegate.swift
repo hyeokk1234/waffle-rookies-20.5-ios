@@ -17,7 +17,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.backgroundColor = .systemBackground
         
-        let movieUsecase = MovieUsecase()
+        let repository = Repository()
+        let movieUsecase = MovieUsecase(repository: repository)
         let vm = MovieVM(movieUsecase: movieUsecase)
         
         window?.rootViewController = MovieTabbarVC(vm: vm)
