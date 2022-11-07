@@ -12,10 +12,16 @@ import UIKit
 
 class MovieTabbarVC : UITabBarController, UITabBarControllerDelegate {
     let viewModel : MovieVM
+    let movieTabBarItem: UITabBarItem
+    let favoriteTabBarItem: UITabBarItem
     
     init(vm: MovieVM) {
         self.viewModel = vm
+        self.movieTabBarItem = UITabBarItem(title: "Movie", image: UIImage(systemName: "m.square.fill"), tag: 1)
+        self.favoriteTabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "star"), tag: 2)
+        
         super.init(nibName: nil, bundle: nil)
+
     }
     
     required init?(coder: NSCoder) {
@@ -25,16 +31,18 @@ class MovieTabbarVC : UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
-                
-        let movieTab = UINavigationController(rootViewController: MovieTabVC(vm: viewModel))
-        let movieTabBarItem = UITabBarItem(title: "Movie", image: UIImage(systemName: "m.square.fill"), tag: 1)
-        movieTab.tabBarItem = movieTabBarItem
-                
+        
+        setUpTabVC()
+        }
+    
+    func setUpTabVC() {
         let favoriteTab = UINavigationController(rootViewController: FavoriteTabVC(vm: viewModel))
-        let favoriteTabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "star"), tag: 2)
+        let movieTab = UINavigationController(rootViewController: MovieTabVC(vm: viewModel))
+        
+        movieTab.tabBarItem = movieTabBarItem
         favoriteTab.tabBarItem = favoriteTabBarItem
         
         self.viewControllers = [movieTab, favoriteTab]
+
     }
-    
 }
