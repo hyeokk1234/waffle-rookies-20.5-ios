@@ -14,6 +14,9 @@ class MovieUsecase {
     let disposeBag = DisposeBag()
     let repository : Repository
     
+    var popularMovies : [MovieModel] = []
+    var topRatedMovies : [MovieModel] = []
+    
     //한 번에 API 계속 호출되는걸 방지하기 위한 boolean flag
     var paginationFlag = true
     
@@ -26,10 +29,10 @@ class MovieUsecase {
     
     func requestPopular(page: Int) {
 //        if (paginationFlag) {
-            paginationFlag = false;
-            repository.popularApiRequest(page: page)
-                .bind(to: popularMoviesSubject)
-                .disposed(by: disposeBag)
+        paginationFlag = false;
+        repository.popularApiRequest(page: page, previousPopularMoviesSubject: popularMoviesSubject)
+        .bind(to: popularMoviesSubject)
+        .disposed(by: disposeBag)
 //            DispatchQueue.main.async {
 //                self.paginationFlag = true;
 //            }
@@ -40,7 +43,7 @@ class MovieUsecase {
     func requestTopRated(page: Int) {
 //        if (paginationFlag) {
 //            paginationFlag = false;
-            repository.topRatedApiRequest(page: page)
+            repository.topRatedApiRequest(page: page, previousTopRatedMoviesSubject: topRatedMoviesSubject)
                 .bind(to: topRatedMoviesSubject)
                 .disposed(by: disposeBag)
 //            DispatchQueue.main.async {
@@ -50,10 +53,18 @@ class MovieUsecase {
     }
     
     func getPopularMovieByIndex(index: Int) -> MovieModel {
-        return repository.popularMovies[index]
+        do {
+            return try popularMoviesSubject.value()[index]
+        } catch {
+            return MovieModel(poster_path: nil, title: nil, vote_average: nil, overview: nil)
+        }
     }
     
     func getTopRatedMovieByIndex(index: Int) -> MovieModel {
-        return repository.topRatedMovies[index]
+        do {
+            return try topRatedMoviesSubject.value()[index]
+        } catch {
+            return MovieModel(poster_path: nil, title: nil, vote_average: nil, overview: nil)
+        }
     }
 }
