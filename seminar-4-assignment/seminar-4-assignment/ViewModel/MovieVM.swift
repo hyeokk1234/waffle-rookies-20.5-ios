@@ -12,10 +12,10 @@ import RxSwift
 
 class MovieVM {
     let movieUsecase : MovieUsecase
-    let favoriteUsecase: FavoriteUsecase
+    let favoriteMovieUsecase: FavoriteMovieUsecase
     
     var popularCallCount : Int = 1
-    var topRateCallCount : Int = 1
+    var topRatedCallCount : Int = 1
     
     var popularMovieDataSource: Observable<[MovieModel]> {
         return movieUsecase.popularMoviesSubject.asObservable()
@@ -24,19 +24,19 @@ class MovieVM {
         return movieUsecase.topRatedMoviesSubject.asObservable()
     }
     var favoriteMovieDataSource: Observable<[MovieModel]> {
-        return favoriteUsecase.favoritesSubject.asObservable()
+        return favoriteMovieUsecase.favoritesSubject.asObservable()
     }
     
-    init(movieUsecase: MovieUsecase, favoriteUsecase: FavoriteUsecase) {
+    init(movieUsecase: MovieUsecase, favoriteMovieUsecase: FavoriteMovieUsecase) {
         self.movieUsecase = movieUsecase
-        self.favoriteUsecase = favoriteUsecase
+        self.favoriteMovieUsecase = favoriteMovieUsecase
         
         requestInitialMovieData()
     }
     
     func requestInitialMovieData() {
         movieUsecase.requestPopular(page: popularCallCount)
-        movieUsecase.requestTopRated(page: topRateCallCount)
+        movieUsecase.requestTopRated(page: topRatedCallCount)
     }
     
     func requestMorePopularMovieData() {
@@ -51,14 +51,14 @@ class MovieVM {
         guard !movieUsecase.isPaginatingTopRatedMovies else {
             return
         }
-        topRateCallCount += 1
-        movieUsecase.requestTopRated(page: topRateCallCount)
+        topRatedCallCount += 1
+        movieUsecase.requestTopRated(page: topRatedCallCount)
     }
     
     func getPopularMovieByIndex(index: Int) -> MovieModel {
         return movieUsecase.getPopularMovieByIndex(index: index)
     }
-    
+
     func getTopRatedMovieByIndex(index: Int) -> MovieModel {
         return movieUsecase.getTopRatedMovieByIndex(index: index)
     }
@@ -67,22 +67,22 @@ class MovieVM {
 // favorite 관련 메서드들
 extension MovieVM {
     func getFavoriteMovieByIndex(index: Int) -> MovieModel {
-        return favoriteUsecase.getFavoriteMovieByIndex(index: index)
+        return favoriteMovieUsecase.getFavoriteMovieByIndex(index: index)
     }
     
     func checkFavoriteExistenceIfExistReturnIndex(movieModel: MovieModel) -> Int? {
-        return favoriteUsecase.checkFavoriteExistenceIfExistReturnIndex(movieModel: movieModel)
+        return favoriteMovieUsecase.checkFavoriteExistenceIfExistReturnIndex(movieModel: movieModel)
     }
     
     func removeFavoriteAtIndex(index: Int) {
-        favoriteUsecase.removeFavoriteAtIndex(index: index)
+        favoriteMovieUsecase.removeFavoriteAtIndex(index: index)
     }
     
     func appendNewFavoriteMovie(movieModel: MovieModel) {
-        favoriteUsecase.appendNewFavoriteMovie(movieModel: movieModel)
+        favoriteMovieUsecase.appendNewFavoriteMovie(movieModel: movieModel)
     }
     
     func reloadFavoriteSubject() {
-        favoriteUsecase.reloadFavoriteSubject()
+        favoriteMovieUsecase.reloadFavoriteSubject()
     }
 }

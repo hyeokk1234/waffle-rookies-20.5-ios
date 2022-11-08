@@ -50,11 +50,7 @@ class MovieInfoVC : UIViewController {
     }
     
     private func setUpLayout() {
-        if (checkExistenceIfExistReturnIndex() != nil) { //존재하는경우
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
-        } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
-        }
+        setUpFavoriteButton()
         
         self.view.backgroundColor = .white
         self.view.addSubview(posterImage)
@@ -102,6 +98,14 @@ class MovieInfoVC : UIViewController {
             self.overviewLabel.topAnchor.constraint(equalTo: self.rateLabel.bottomAnchor, constant: 10),
             self.overviewLabel.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
         ])
+    }
+    
+    private func setUpFavoriteButton() {
+        if (checkExistenceIfExistReturnIndex() != nil) { //존재하는경우
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favoriteButtonTapped))
+        }
     }
     
     private func checkExistenceIfExistReturnIndex() -> Int? {

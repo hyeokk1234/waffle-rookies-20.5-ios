@@ -10,7 +10,7 @@ import Alamofire
 import RxCocoa
 import RxSwift
 
-class FavoriteUsecase {
+class FavoriteMovieUsecase {
     let disposeBag = DisposeBag()
     var favorites: [MovieModel]
     var favoritesSubject = BehaviorSubject<[MovieModel]>(value: [])
@@ -45,7 +45,6 @@ class FavoriteUsecase {
         if let encoded = try? encoder.encode(favorites) {
             UserDefaults.standard.set(encoded, forKey: "favorites")
         }
-        
         UserDefaults.standard.synchronize()
     }
     

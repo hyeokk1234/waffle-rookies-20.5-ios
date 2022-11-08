@@ -5,8 +5,6 @@
 //  Created by 최성혁 on 2022/10/08.
 //
 
-//기본이 되는 tabbar 뷰컨
-
 import Foundation
 import UIKit
 
@@ -33,7 +31,7 @@ class MovieTabbarVC : UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         
         setUpTabVC()
-        }
+    }
     
     func setUpTabVC() {
         let favoriteTab = UINavigationController(rootViewController: FavoriteTabVC(vm: viewModel))

@@ -31,8 +31,8 @@ class MovieUsecase {
         repository.popularApiRequest(page: page, previousPopularMoviesSubject: popularMoviesSubject){
             self.isPaginatingPopularMovies = false
         }
-        .bind(to: popularMoviesSubject)
-        .disposed(by: disposeBag)
+            .bind(to: popularMoviesSubject)
+            .disposed(by: disposeBag)
         
     }
     
