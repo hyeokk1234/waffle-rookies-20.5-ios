@@ -31,7 +31,7 @@ class MovieCollectionViewCell : UICollectionViewCell {
         setUpLabels()
     }
     
-    func setData(_ data: MovieModel) {
+    func configure(_ data: MovieModel) {
         titleLabel.text =  data.title
         if let vote_average = data.vote_average {
             rateLabel.text = "\(vote_average)"

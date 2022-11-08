@@ -31,7 +31,6 @@ class TopRatedCollectionViewVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
         bindToSubject()
     }
 
@@ -80,9 +79,11 @@ extension TopRatedCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
     }
     
     func bindToSubject() {
+        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
+
         viewModel.topRateMoviesSubject
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
-                cell.setData(item)
+                cell.configure(item)
             }
             .disposed(by: disposeBag)
     }

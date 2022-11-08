@@ -11,33 +11,25 @@ import RxCocoa
 import RxSwift
 
 class MovieUsecase {
+    let disposeBag = DisposeBag()
     let repository : Repository
-        
+    
     var popularMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
-    
-    var topRateMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
-    
+    var topRatedMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
     init(repository : Repository) {
         self.repository = repository
     }
     
     func requestPopular(page: Int) {
-        _ = repository.popularApiRequest(page: page)
+        repository.popularApiRequest(page: page)
             .bind(to: popularMoviesSubject)
+            .disposed(by: disposeBag)
     }
     
     func requestTopRated(page: Int) {
-        _ = repository.topRateApiRequest(page: page)
-            .bind(to: topRateMoviesSubject)
+        repository.topRatedApiRequest(page: page)
+            .bind(to: topRatedMoviesSubject)
+            .disposed(by: disposeBag)
     }
-    
-    func requestMorePopular(page: Int) {
-        
-    }
-    
-    func requestMoreTopRated(page: Int) {
-        
-    }
-    
 }

@@ -21,6 +21,12 @@ class MovieVM {
     
     var favoritesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
+    var popularMovieDataSource: Observable<[MovieModel]> {
+        return movieUsecase.popularMoviesSubject.asObservable()
+    }
+    var topRatedMovieDataSource: Observable<[MovieModel]> {
+        return movieUsecase.topRatedMoviesSubject.asObservable()
+    }
     
     init(movieUsecase: MovieUsecase, favoriteUsecase: FavoriteUsecase) {
         self.movieUsecase = movieUsecase
@@ -58,11 +64,11 @@ class MovieVM {
     
     func requestMorePopularMovieData() {
         popularCallCount += 1
-        movieUsecase.requestMorePopular(page: popularCallCount)
+        movieUsecase.requestPopular(page: popularCallCount)
     }
     
     func requestMoreTopRatedMovieData() {
         topRateCallCount += 1
-        movieUsecase.requestMoreTopRated(page: topRateCallCount)
+        movieUsecase.requestTopRated(page: topRateCallCount)
     }
 }

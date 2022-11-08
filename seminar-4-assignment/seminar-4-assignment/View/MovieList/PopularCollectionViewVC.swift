@@ -31,7 +31,6 @@ class PopularCollectionViewVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
         bindToSubject()
     }
 
@@ -78,9 +77,11 @@ extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelega
     }
     
     func bindToSubject() {
+        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
+
         viewModel.popularMoviesSubject
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
-                cell.setData(item)
+                cell.configure(item)
             }
             .disposed(by: disposeBag)
     }

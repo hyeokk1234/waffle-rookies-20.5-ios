@@ -19,19 +19,11 @@ class MovieTabVC : UIViewController {
     
     private let segmentedControl = UISegmentedControl(items: ["Popular", "Top-Rated"])
     
-    //인기순 뷰컨
+    //인기순 CollectionViewVC
     private var popularVC : PopularCollectionViewVC
     
-    //평점순 뷰컨
+    //평점순 CollectionViewVC
     private var rateVC : TopRatedCollectionViewVC
-    
-    private var shouldHidePopularView: Bool? {
-        didSet {
-          guard let shouldHidePopularView = self.shouldHidePopularView else { return }
-            self.popularVC.view.isHidden = shouldHidePopularView
-            self.rateVC.view.isHidden = !self.popularVC.view.isHidden
-        }
-    }
     
     init(vm : MovieVM) {
         self.viewModel = vm
@@ -90,6 +82,14 @@ extension MovieTabVC {
 
         self.segmentedControl.addTarget(self, action: #selector(didChangeValue(segment:)), for: .valueChanged)
         self.didChangeValue(segment: self.segmentedControl)
+    }
+    
+    private var shouldHidePopularView: Bool? {
+        didSet {
+          guard let shouldHidePopularView = self.shouldHidePopularView else { return }
+            self.popularVC.view.isHidden = shouldHidePopularView
+            self.rateVC.view.isHidden = !self.popularVC.view.isHidden
+        }
     }
     
     @objc private func didChangeValue(segment: UISegmentedControl) {
