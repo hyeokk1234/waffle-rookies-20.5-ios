@@ -65,7 +65,7 @@ extension FavoriteCollectionViewVC : UICollectionViewDelegate {
         viewModel.favoritesSubject
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
             
-                cell.setData(item)
+                cell.configure(item)
             }
             .disposed(by: disposeBag)
     }

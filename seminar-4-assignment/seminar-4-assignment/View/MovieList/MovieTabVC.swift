@@ -40,6 +40,14 @@ class MovieTabVC : UIViewController {
         super.viewDidLoad()
         setUpLayout()
     }
+    
+    private var shouldHidePopularView: Bool? {
+        didSet {
+          guard let shouldHidePopularView = self.shouldHidePopularView else { return }
+            self.popularVC.view.isHidden = shouldHidePopularView
+            self.rateVC.view.isHidden = !self.popularVC.view.isHidden
+        }
+    }
 }
 
 extension MovieTabVC {
@@ -82,14 +90,6 @@ extension MovieTabVC {
 
         self.segmentedControl.addTarget(self, action: #selector(didChangeValue(segment:)), for: .valueChanged)
         self.didChangeValue(segment: self.segmentedControl)
-    }
-    
-    private var shouldHidePopularView: Bool? {
-        didSet {
-          guard let shouldHidePopularView = self.shouldHidePopularView else { return }
-            self.popularVC.view.isHidden = shouldHidePopularView
-            self.rateVC.view.isHidden = !self.popularVC.view.isHidden
-        }
     }
     
     @objc private func didChangeValue(segment: UISegmentedControl) {

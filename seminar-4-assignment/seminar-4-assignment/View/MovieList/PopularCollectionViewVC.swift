@@ -31,7 +31,7 @@ class PopularCollectionViewVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        bindToSubject()
+        bindCollectionView()
     }
 
     func configureCollectionView() {
@@ -50,20 +50,7 @@ extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelega
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
         if (position > (collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-            
-            let subject = viewModel.popularMoviesSubject
-            if (viewModel.paginationFlag) {
-                viewModel.apiRequestPopular { result in
-                    if let result = result {
-                        do {
-                            self.viewModel.popularMovies += result
-                            try subject.onNext(subject.value() + result)
-                        } catch {
-                            print("error")
-                        }
-                    }
-                }
-            }
+            viewModel.requestMorePopularMovieData()
         }
     }
     
@@ -71,15 +58,15 @@ extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelega
         let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
         
         if let image = cell.posterImage.image {
-            let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.popularMovies[indexPath.row], image: image)
+            let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.getPopularMovieByIndex(index: indexPath.row), image: image)
             self.navigationController?.pushViewController(movieInfoVC, animated: true)
         }
     }
     
-    func bindToSubject() {
+    func bindCollectionView() {
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
 
-        viewModel.popularMoviesSubject
+        viewModel.popularMovieDataSource
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
                 cell.configure(item)
             }

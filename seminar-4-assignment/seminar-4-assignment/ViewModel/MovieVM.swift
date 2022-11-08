@@ -71,4 +71,12 @@ class MovieVM {
         topRateCallCount += 1
         movieUsecase.requestTopRated(page: topRateCallCount)
     }
+    
+    func getPopularMovieByIndex(index: Int) -> MovieModel {
+        return movieUsecase.getPopularMovieByIndex(index: index)
+    }
+    
+    func getTopRatedMovieByIndex(index: Int) -> MovieModel {
+        return movieUsecase.getTopRatedMovieByIndex(index: index)
+    }
 }

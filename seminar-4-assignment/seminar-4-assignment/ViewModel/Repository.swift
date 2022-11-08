@@ -18,12 +18,8 @@ class Repository {
     var popularMovies : [MovieModel] = []
     var topRatedMovies : [MovieModel] = []
     
-    //한 번에 API 계속 호출되는걸 방지하기 위한 boolean flag
-    var paginationFlag = true
     
     func popularApiRequest(page: Int) -> Observable<[MovieModel]>{
-        self.paginationFlag = false
-        
         let finalUrl = "https://api.themoviedb.org/3/movie/popular?api_key=\(Constants.myApiKey)&language=en-US&page=\(page)"
         
         return Observable.create { emitter in
@@ -46,11 +42,8 @@ class Repository {
                 }
                 
                 if let json = json {
-                    self!.paginationFlag = true
                     self?.popularMovies += json.results!
                     emitter.onNext(self!.popularMovies)
-                } else {
-                    self!.paginationFlag = true
                 }
             }
             return Disposables.create()
@@ -58,8 +51,6 @@ class Repository {
     }
     
     func topRatedApiRequest(page: Int) -> Observable<[MovieModel]> {
-        self.paginationFlag = false
-        
         let finalUrl = "https://api.themoviedb.org/3/movie/top_rated?api_key=\(Constants.myApiKey)&language=en-US&page=\(page)"
         
         return Observable.create { emitter in
@@ -82,11 +73,8 @@ class Repository {
                 }
                 
                 if let json = json {
-                    self!.paginationFlag = true
                     self?.topRatedMovies += json.results!
                     emitter.onNext(self!.topRatedMovies)
-                } else {
-                    self!.paginationFlag = true
                 }
             }
             return Disposables.create()

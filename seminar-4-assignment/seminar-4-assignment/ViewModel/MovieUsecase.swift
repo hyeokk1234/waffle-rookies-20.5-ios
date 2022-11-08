@@ -14,6 +14,9 @@ class MovieUsecase {
     let disposeBag = DisposeBag()
     let repository : Repository
     
+    //한 번에 API 계속 호출되는걸 방지하기 위한 boolean flag
+    var paginationFlag = true
+    
     var popularMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
     var topRatedMoviesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
@@ -22,14 +25,35 @@ class MovieUsecase {
     }
     
     func requestPopular(page: Int) {
-        repository.popularApiRequest(page: page)
-            .bind(to: popularMoviesSubject)
-            .disposed(by: disposeBag)
+//        if (paginationFlag) {
+            paginationFlag = false;
+            repository.popularApiRequest(page: page)
+                .bind(to: popularMoviesSubject)
+                .disposed(by: disposeBag)
+//            DispatchQueue.main.async {
+//                self.paginationFlag = true;
+//            }
+//        }
+        
     }
     
     func requestTopRated(page: Int) {
-        repository.topRatedApiRequest(page: page)
-            .bind(to: topRatedMoviesSubject)
-            .disposed(by: disposeBag)
+//        if (paginationFlag) {
+//            paginationFlag = false;
+            repository.topRatedApiRequest(page: page)
+                .bind(to: topRatedMoviesSubject)
+                .disposed(by: disposeBag)
+//            DispatchQueue.main.async {
+//                self.paginationFlag = true;
+//            }
+//        }
+    }
+    
+    func getPopularMovieByIndex(index: Int) -> MovieModel {
+        return repository.popularMovies[index]
+    }
+    
+    func getTopRatedMovieByIndex(index: Int) -> MovieModel {
+        return repository.topRatedMovies[index]
     }
 }
