@@ -63,11 +63,17 @@ class MovieVM {
     }
     
     func requestMorePopularMovieData() {
+        guard !movieUsecase.isPaginatingPopularMovies else {
+            return
+        }
         popularCallCount += 1
         movieUsecase.requestPopular(page: popularCallCount)
     }
     
     func requestMoreTopRatedMovieData() {
+        guard !movieUsecase.isPaginatingTopRatedMovies else {
+            return
+        }
         topRateCallCount += 1
         movieUsecase.requestTopRated(page: topRateCallCount)
     }

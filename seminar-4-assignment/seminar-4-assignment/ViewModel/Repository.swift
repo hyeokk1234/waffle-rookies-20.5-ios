@@ -17,7 +17,7 @@ class Repository {
     
     
     
-    func popularApiRequest(page: Int, previousPopularMoviesSubject: BehaviorSubject<[MovieModel]>) -> Observable<[MovieModel]>{
+    func popularApiRequest(page: Int, previousPopularMoviesSubject: BehaviorSubject<[MovieModel]>, completion: @escaping () -> (Void)) -> Observable<[MovieModel]> {
         let finalUrl = "https://api.themoviedb.org/3/movie/popular?api_key=\(Constants.myApiKey)&language=en-US&page=\(page)"
         
         return Observable.create { emitter in
@@ -45,13 +45,14 @@ class Repository {
                     } catch {
                         print(error)
                     }
+                    completion()
                 }
             }
             return Disposables.create()
         }
     }
     
-    func topRatedApiRequest(page: Int, previousTopRatedMoviesSubject: BehaviorSubject<[MovieModel]>) -> Observable<[MovieModel]> {
+    func topRatedApiRequest(page: Int, previousTopRatedMoviesSubject: BehaviorSubject<[MovieModel]>, completion: @escaping () -> (Void)) -> Observable<[MovieModel]> {
         let finalUrl = "https://api.themoviedb.org/3/movie/top_rated?api_key=\(Constants.myApiKey)&language=en-US&page=\(page)"
         
         return Observable.create { emitter in
@@ -79,6 +80,7 @@ class Repository {
                     } catch {
                         print(error)
                     }
+                    completion()
                 }
             }
             return Disposables.create()
