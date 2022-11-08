@@ -24,7 +24,7 @@ class MovieInfoVC : UIViewController {
         viewModel = vm
         movieModel = data
         super.init(nibName: nil, bundle: nil)
-        setData(data: data, image: image)
+        configure(data: data, image: image)
     }
     
     required init?(coder: NSCoder) {
@@ -40,7 +40,7 @@ class MovieInfoVC : UIViewController {
         checkExistenceSetButtonDesign()
     }
     
-    private func setData(data: MovieModel, image: UIImage) {
+    private func configure(data: MovieModel, image: UIImage) {
         titleLabel.text = data.title
         if let vote_average = data.vote_average {
             rateLabel.text = "\(vote_average)"
@@ -105,17 +105,12 @@ class MovieInfoVC : UIViewController {
     }
     
     private func checkExistenceIfExistReturnIndex() -> Int? {
-        for (index, movie) in viewModel.favorites.enumerated() {
-            if (movie.title == movieModel.title) {
-                return index
-            }
-        }
-        return nil
+        return viewModel.checkFavoriteExistenceIfExistReturnIndex(movieModel: movieModel)
     }
     
     private func checkExistenceSetButtonDesign() {
         let targetIndex = checkExistenceIfExistReturnIndex()
-        if ( targetIndex != nil) { //존재하는경우: star 색칠하기
+        if (targetIndex != nil) { //존재하는경우: star 색칠하기
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star.fill")
         } else { //존재하지 않는 경우: star 색 빼주기
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star")
@@ -126,23 +121,11 @@ class MovieInfoVC : UIViewController {
     @objc func favoriteButtonTapped() {
         let targetIndex = checkExistenceIfExistReturnIndex()
         if ( targetIndex != nil) { //존재하는경우: 삭제를 해줘야함.
-            viewModel.favorites.remove(at: targetIndex!)
-            saveUserDefaults()
+            viewModel.removeFavoriteAtIndex(index: targetIndex!)
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star")
         } else { //아직 없으면: 새로 넣어줘야함.
-            viewModel.favorites.append(movieModel)
-            saveUserDefaults()
+            viewModel.appendNewFavoriteMovie(movieModel: movieModel)
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star.fill")
         }
-    }
-    
-    func saveUserDefaults() {
-        let encoder = JSONEncoder()
-
-        if let encoded = try? encoder.encode(viewModel.favorites) {
-            UserDefaults.standard.set(encoded, forKey: "favorites")
-        }
-        
-        UserDefaults.standard.synchronize()
     }
 }

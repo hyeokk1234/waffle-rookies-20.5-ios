@@ -17,42 +17,19 @@ class MovieVM {
     var popularCallCount : Int = 1
     var topRateCallCount : Int = 1
     
-    var favorites: [MovieModel]
-    
-    var favoritesSubject = BehaviorSubject<[MovieModel]>(value: [])
-    
     var popularMovieDataSource: Observable<[MovieModel]> {
         return movieUsecase.popularMoviesSubject.asObservable()
     }
     var topRatedMovieDataSource: Observable<[MovieModel]> {
         return movieUsecase.topRatedMoviesSubject.asObservable()
     }
+    var favoriteMovieDataSource: Observable<[MovieModel]> {
+        return favoriteUsecase.favoritesSubject.asObservable()
+    }
     
     init(movieUsecase: MovieUsecase, favoriteUsecase: FavoriteUsecase) {
         self.movieUsecase = movieUsecase
         self.favoriteUsecase = favoriteUsecase
-        
-        //favorite관련 ---------------------------------------------------------------
-        if let objects = UserDefaults.standard.value(forKey: "favorites") as? Data {
-            let decoder = JSONDecoder()
-            if let favoritesDecoded = try? decoder.decode(Array.self, from: objects) as [MovieModel] {
-                favorites = favoritesDecoded
-            } else {
-                favorites = [MovieModel]()
-            }
-        } else {
-            favorites = [MovieModel]()
-        }
-        
-        let favoriteObservable = Observable<[MovieModel]>
-            .create { emitter in
-                emitter.onNext(self.favorites)
-            
-                return Disposables.create()
-            }
-        
-        _ = favoriteObservable.bind(to: favoritesSubject)
-        //---------------------------------------------------------------------------
         
         requestInitialMovieData()
     }
@@ -84,5 +61,28 @@ class MovieVM {
     
     func getTopRatedMovieByIndex(index: Int) -> MovieModel {
         return movieUsecase.getTopRatedMovieByIndex(index: index)
+    }
+}
+
+// favorite 관련 메서드들
+extension MovieVM {
+    func getFavoriteMovieByIndex(index: Int) -> MovieModel {
+        return favoriteUsecase.getFavoriteMovieByIndex(index: index)
+    }
+    
+    func checkFavoriteExistenceIfExistReturnIndex(movieModel: MovieModel) -> Int? {
+        return favoriteUsecase.checkFavoriteExistenceIfExistReturnIndex(movieModel: movieModel)
+    }
+    
+    func removeFavoriteAtIndex(index: Int) {
+        favoriteUsecase.removeFavoriteAtIndex(index: index)
+    }
+    
+    func appendNewFavoriteMovie(movieModel: MovieModel) {
+        favoriteUsecase.appendNewFavoriteMovie(movieModel: movieModel)
+    }
+    
+    func reloadFavoriteSubject() {
+        favoriteUsecase.reloadFavoriteSubject()
     }
 }

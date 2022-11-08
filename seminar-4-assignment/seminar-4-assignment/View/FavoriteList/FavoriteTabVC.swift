@@ -5,8 +5,6 @@
 //  Created by 최성혁 on 2022/10/08.
 //
 
-//Favorite Tab을 눌렀을 때 나올 뷰컨
-
 import Foundation
 import UIKit
 import RxSwift

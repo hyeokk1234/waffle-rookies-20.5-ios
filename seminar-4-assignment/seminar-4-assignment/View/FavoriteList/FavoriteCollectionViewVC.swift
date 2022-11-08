@@ -5,8 +5,6 @@
 //  Created by 최성혁 on 2022/10/08.
 //
 
-//Favorite Tab을 눌렀을때 나올 collection view
-
 import Foundation
 import UIKit
 import RxSwift
@@ -31,12 +29,11 @@ class FavoriteCollectionViewVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
         bindToSubject()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        viewModel.favoritesSubject.onNext(viewModel.favorites)
+        viewModel.reloadFavoriteSubject()
     }
     
     func configureCollectionView() {
@@ -56,13 +53,16 @@ extension FavoriteCollectionViewVC : UICollectionViewDelegate {
         let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
         
         if let image = cell.posterImage.image {
-            let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.favorites[indexPath.row], image: image)
+            
+            let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.getFavoriteMovieByIndex(index: indexPath.row), image: image)
             self.navigationController?.pushViewController(movieInfoVC, animated: true)
         }
     }
     
     func bindToSubject() {
-        viewModel.favoritesSubject
+        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
+
+        viewModel.favoriteMovieDataSource
             .bind(to: collectionView.rx.items(cellIdentifier: "MovieCollectionViewCell", cellType: MovieCollectionViewCell.self)) { index, item, cell in
             
                 cell.configure(item)

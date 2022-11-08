@@ -15,14 +15,11 @@ class Repository {
         static let myApiKey = "ec79d7d5a25b0af54c4a226f6a59dafc"
     }
     
-    
-    
     func popularApiRequest(page: Int, previousPopularMoviesSubject: BehaviorSubject<[MovieModel]>, completion: @escaping () -> (Void)) -> Observable<[MovieModel]> {
         let finalUrl = "https://api.themoviedb.org/3/movie/popular?api_key=\(Constants.myApiKey)&language=en-US&page=\(page)"
         
         return Observable.create { emitter in
             AF.request(finalUrl, method: .get).responseData { [weak self] response in
-                
                 let decoder = JSONDecoder()
                 var json : JsonFirstLayer?
                 switch response.result {
@@ -85,7 +82,5 @@ class Repository {
             }
             return Disposables.create()
         }
-        
-        
     }
 }

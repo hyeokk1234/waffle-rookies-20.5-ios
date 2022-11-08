@@ -14,9 +14,6 @@ class MovieUsecase {
     let disposeBag = DisposeBag()
     let repository : Repository
     
-    var popularMovies : [MovieModel] = []
-    var topRatedMovies : [MovieModel] = []
-    
     //한 번에 API 계속 호출되는걸 방지하기 위한 boolean flag
     var isPaginatingPopularMovies = false
     var isPaginatingTopRatedMovies = false

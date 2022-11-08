@@ -11,7 +11,9 @@ import RxCocoa
 import RxSwift
 
 class FavoriteUsecase {
+    let disposeBag = DisposeBag()
     var favorites: [MovieModel]
+    var favoritesSubject = BehaviorSubject<[MovieModel]>(value: [])
     
     init() {
         if let objects = UserDefaults.standard.value(forKey: "favorites") as? Data {
@@ -32,6 +34,45 @@ class FavoriteUsecase {
                 return Disposables.create()
             }
         
-//        _ = favoriteObservable.bind(to: favoritesSubject)
+        favoriteObservable
+            .bind(to: favoritesSubject)
+            .disposed(by: disposeBag)
+    }
+    
+    func saveUserDefaults() {
+        let encoder = JSONEncoder()
+
+        if let encoded = try? encoder.encode(favorites) {
+            UserDefaults.standard.set(encoded, forKey: "favorites")
+        }
+        
+        UserDefaults.standard.synchronize()
+    }
+    
+    func checkFavoriteExistenceIfExistReturnIndex(movieModel: MovieModel) -> Int? {
+        for (index, movie) in favorites.enumerated() {
+            if (movie.title == movieModel.title) {
+                return index
+            }
+        }
+        return nil
+    }
+    
+    func removeFavoriteAtIndex(index: Int) {
+        favorites.remove(at: index)
+        saveUserDefaults()
+    }
+    
+    func appendNewFavoriteMovie(movieModel: MovieModel) {
+        favorites.append(movieModel)
+        saveUserDefaults()
+    }
+    
+    func reloadFavoriteSubject() {
+        favoritesSubject.onNext(favorites)
+    }
+    
+    func getFavoriteMovieByIndex(index: Int) -> MovieModel {
+        return favorites[index]
     }
 }
