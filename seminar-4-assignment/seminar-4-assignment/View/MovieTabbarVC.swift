@@ -34,7 +34,7 @@ class MovieTabbarVC : UITabBarController, UITabBarControllerDelegate {
     }
     
     func setUpTabVC() {
-        let favoriteTab = UINavigationController(rootViewController: FavoriteTabVC(vm: viewModel))
+        let favoriteTab = UINavigationController(rootViewController: FavoriteCollectionViewVC(vm: viewModel))
         let movieTab = UINavigationController(rootViewController: MovieTabVC(vm: viewModel))
         
         movieTab.tabBarItem = movieTabBarItem

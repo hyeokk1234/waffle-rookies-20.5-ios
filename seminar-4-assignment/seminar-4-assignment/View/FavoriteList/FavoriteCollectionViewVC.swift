@@ -28,6 +28,7 @@ class FavoriteCollectionViewVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Favorites"
         configureCollectionView()
         bindToSubject()
     }
