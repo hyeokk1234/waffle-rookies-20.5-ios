@@ -58,7 +58,10 @@ extension PopularCollectionViewVC : UIScrollViewDelegate, UICollectionViewDelega
         let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
         
         if let image = cell.posterImage.image {
-            let movieInfoVC = MovieInfoVC(vm: viewModel, data: viewModel.getPopularMovieByIndex(index: indexPath.row), image: image)
+            let newViewModel = MovieVM(movieUsecase: viewModel.movieUsecase, favoriteMovieUsecase: viewModel.favoriteMovieUsecase)
+            newViewModel.selectPopularMovieByIndex(index: indexPath.row)
+            
+            let movieInfoVC = MovieInfoVC(vm: newViewModel, image: image)
             self.navigationController?.pushViewController(movieInfoVC, animated: true)
         }
     }

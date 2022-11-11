@@ -20,11 +20,11 @@ class MovieInfoVC : UIViewController {
     let overviewLabel = UILabel()
     let movieModel: MovieModel
     
-    init(vm: MovieVM, data : MovieModel, image: UIImage) {
+    init(vm: MovieVM, image: UIImage) {
         viewModel = vm
-        movieModel = data
+        movieModel = vm.selectedMovieModel!
         super.init(nibName: nil, bundle: nil)
-        configure(data: data, image: image)
+        configure(data: movieModel, image: image)
     }
     
     required init?(coder: NSCoder) {
@@ -128,7 +128,7 @@ class MovieInfoVC : UIViewController {
             viewModel.removeFavoriteAtIndex(index: targetIndex!)
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star")
         } else { //아직 없으면: 새로 넣어줘야함.
-            viewModel.appendNewFavoriteMovie(movieModel: movieModel)
+            viewModel.appendSelectedToFavorites()
             navigationItem.rightBarButtonItem!.image = UIImage(systemName: "star.fill")
         }
     }
