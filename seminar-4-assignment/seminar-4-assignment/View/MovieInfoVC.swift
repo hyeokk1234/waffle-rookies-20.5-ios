@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 
 class MovieInfoVC : UIViewController {
-    let viewModel : MovieVM
+    let viewModel : DetailVM
     
     let posterImage = UIImageView()
     let titleLabel = UILabel()
@@ -20,7 +20,7 @@ class MovieInfoVC : UIViewController {
     let overviewLabel = UILabel()
     let movieModel: MovieModel
     
-    init(vm: MovieVM, image: UIImage) {
+    init(vm: DetailVM, image: UIImage) {
         viewModel = vm
         movieModel = vm.selectedMovieModel!
         super.init(nibName: nil, bundle: nil)

@@ -17,7 +17,6 @@ class MovieVM {
     var popularCallCount : Int = 1
     var topRatedCallCount : Int = 1
     
-    var selectedMovieModel: MovieModel?
     
     var popularMovieDataSource: Observable<[MovieModel]> {
         return movieUsecase.popularMoviesSubject.asObservable()
@@ -32,11 +31,10 @@ class MovieVM {
     init(movieUsecase: MovieUsecase, favoriteMovieUsecase: FavoriteMovieUsecase) {
         self.movieUsecase = movieUsecase
         self.favoriteMovieUsecase = favoriteMovieUsecase
-        
-        requestInitialMovieData()
+        requestInitialData()
     }
     
-    func requestInitialMovieData() {
+    func requestInitialData() {
         movieUsecase.requestPopular(page: popularCallCount)
         movieUsecase.requestTopRated(page: topRatedCallCount)
     }
@@ -57,33 +55,11 @@ class MovieVM {
         movieUsecase.requestTopRated(page: topRatedCallCount)
     }
     
-    func selectPopularMovieByIndex(index: Int) {
-        self.selectedMovieModel = movieUsecase.getPopularMovieByIndex(index: index)
-    }
     
-    func selectTopRatedMovieByIndex(index: Int) {
-        self.selectedMovieModel = movieUsecase.getTopRatedMovieByIndex(index: index)
-    }
 }
 
 // favorite 관련 메서드들
 extension MovieVM {
-    func selectFavoriteMovieByIndex(index: Int) {
-        self.selectedMovieModel = favoriteMovieUsecase.getFavoriteMovieByIndex(index: index)
-    }
-    
-    func checkFavoriteExistenceIfExistReturnIndex(movieModel: MovieModel) -> Int? {
-        return favoriteMovieUsecase.checkFavoriteExistenceIfExistReturnIndex(movieModel: movieModel)
-    }
-    
-    func removeFavoriteAtIndex(index: Int) {
-        favoriteMovieUsecase.removeFavoriteAtIndex(index: index)
-    }
-
-    func appendSelectedToFavorites() {
-        favoriteMovieUsecase.appendNewFavoriteMovie(movieModel: selectedMovieModel!)
-    }
-    
     func reloadFavoriteSubject() {
         favoriteMovieUsecase.reloadFavoriteSubject()
     }

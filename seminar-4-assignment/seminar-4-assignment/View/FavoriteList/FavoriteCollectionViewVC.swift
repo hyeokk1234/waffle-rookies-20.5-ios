@@ -54,7 +54,7 @@ extension FavoriteCollectionViewVC : UICollectionViewDelegate {
         let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
         
         if let image = cell.posterImage.image {
-            let newViewModel = MovieVM(movieUsecase: viewModel.movieUsecase, favoriteMovieUsecase: viewModel.favoriteMovieUsecase)
+            let newViewModel = DetailVM(movieUsecase: viewModel.movieUsecase, favoriteMovieUsecase: viewModel.favoriteMovieUsecase)
             newViewModel.selectFavoriteMovieByIndex(index: indexPath.row)
             
             let movieInfoVC = MovieInfoVC(vm: newViewModel, image: image)
